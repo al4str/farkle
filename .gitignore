@@ -1,12 +1,18 @@
+# Editor / OS
 .idea
+.vscode
+.claude
+.DS_Store
 
+# Env & secrets
 .env
+.certs
 
+# Dependencies
 node_modules
 
+# Build output
 /assets
-
 /dist
-
 /temp
 
