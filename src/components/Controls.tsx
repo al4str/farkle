@@ -1,4 +1,6 @@
-import { sceneState, setSceneState } from "src/store/scene";
+import { loopSetTargetFps } from "src/loop";
+import { sceneState, setSceneState } from "src/state/test";
+import { InteractionsDemo } from "src/components/InteractionsDemo";
 
 export function Controls() {
   return (
@@ -9,6 +11,32 @@ export function Controls() {
       <p class="controls-hint">
         Solid.js UI and three.js WebGPU, one store.
       </p>
+      <button
+        type="button"
+        class="control-button"
+        disabled={sceneState.started}
+        onClick={() => setSceneState("started", true)}
+      >
+        {sceneState.loaded ? "Running" : sceneState.started ? "Loading…" : "Load scene"}
+      </button>
+      <label class="control">
+        <span class="control-label">
+          Target FPS
+        </span>
+        <select
+          value={sceneState.targetFps}
+          onInput={(event) => {
+            const targetFps = parseInt(event.currentTarget.value, 10);
+            setSceneState("targetFps", targetFps);
+            loopSetTargetFps(targetFps);
+          }}
+        >
+          <option value="30">30</option>
+          <option value="60">60</option>
+          <option value="120">120</option>
+          <option value="144">144</option>
+        </select>
+      </label>
       <label class="control">
         <span class="control-label">
           Rotation speed
@@ -55,6 +83,17 @@ export function Controls() {
           onChange={(event) => setSceneState("wireframe", event.currentTarget.checked)}
         />
       </label>
+      <label class="control control-row">
+        <span class="control-label">
+          WebGPU inspector
+        </span>
+        <input
+          type="checkbox"
+          disabled={!sceneState.loaded}
+          checked={sceneState.inspectorEnabled}
+          onChange={(event) => setSceneState("inspectorEnabled", event.currentTarget.checked)}
+        />
+      </label>
       <dl class="readouts">
         <div class="readout">
           <dt>
@@ -73,6 +112,7 @@ export function Controls() {
           </dd>
         </div>
       </dl>
+      <InteractionsDemo />
     </aside>
   );
 }

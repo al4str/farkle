@@ -1,50 +1,52 @@
 # TODO
 
-Ignore assets dir entirely as distributing it IS illegal
+> FARKLE VERTICAL SLICE:
+> - Client-only game against AI;
+> - Lobby, game, stats pages;
+> - Game "backend" lives in web worker;
 
-Game/UI state manager that syncs with Solid.js UI and Three.js render
-Solid `createStore` should work with `unwrap(store)` for using inside Three.js
-
-JUST A VERTICAL SLICE
-Just a game page
-Automatic game against AI
-Maybe move fake backend to web worker
-
-Game state machine
+## Game state machine
 Initial state
 Actions -> diffs -> next state -> events -> state snapshot
 Players should be able to rewind/replay finished game based on events/snapshots
 Game state snapshot should be network transferable
 
-Build game page UI
+## Game page UI
 Mobile first
 Native 2k support
 Post 2k, should zoom?
 
+## Routing
 Global loading screen
-
 Global error screen
 
-UI sound system
+## UI sound system
 All clicks and key presses should have dedicated sound
 
-Background music system
+## Background music system
 Native OS music support
 Artist - Title + Cover meta info
 Medieval-styled mini-player (inside settings?)
 Next song in-game notification
 
-Ambient soundscape
+## Ambient soundscape
 Pleasant forest white noise
 Day/Night summer ambience
 Occasional wind, birds, woodpecker, insects flying by, crickets, owls
 
-Choose game background
+## Game background
 Orb with golden heraldic elements on dark blue-ish cloth?
 Gradient, bottom black to blurred env map?
 
-Start game full screen native dialog
-Or start page
+## Dice preview
+List all game dice
+Every item: icon, name
+Preview: description, weights, 3d model
+> TUNE DIE MATERIAL JSON VALUES
+
+## i18n
+
+## Start page
 Enable UI sounds, enable background music, enable ambient soundscape
 TBD: graphical settings
 Players joining/readyness system + Bunnies
@@ -53,18 +55,19 @@ Player name + icon form
 Dice loadout selection
 Game day/night theme selector
 
-Overlay screens
+## Overlay screens
 Native fullscreen dialogs
 Farkle with randomized image
 Lost aka died screen
 Fancy winning screen + confetti
 
-End game screen dialog or page
+## End game page
 Finished game stats table
 Who won
 Players score
 
-Native settings dialog
+## Settings dialog
+Native HTML dialog
 In-game, triggered by ESC
 UI sound volume
 Music volume
@@ -74,51 +77,48 @@ TBD: gamepad support
 TBD: keys rebinding
 Save to localStorage
 
-Players score component
+## Players score
 Icon + name with hard length limits
 Current player turn indication
 Waiting for player action + timer
 
-Notification center
+## Notification center
 Height limit
 Scrolling container
 Scroll snap
 Error notifications
 Text length limit
 
-Dice in-game overlay
+## Dice in-game overlay
 1-6 + 666 values image
 Focus ring
 Player/opponent half-ring
 Invisible button elements covering Three.js meshes
 Try to make it accessible?
 
-Turn announcement
+## Turn announcement
 
-Controls and buttons
+## Controls and buttons
 
-Emotes
+## Emotes
 Anchor positioned?
 Should use KCD2 small dialog visuals
 Emotes scene place area for both players?
 Outsource phrases, translations and voice lines to community
 Rate-limit
 
-Global RAF loop
-Can add/remove update functions
-
-Global pointer + keyboard listener
-Can add/remove key + modificator listeners
-Listener can be also invoked with alt key (e.g. WASD or arrow keys)
-
-Pointer/Keyboard system
+## Pointer/Keyboard system
 Support press-to-action
 
-Game state shape: types and defaults
+## Game state shape
+Types and defaults
 
-Game seed, turn seeds and randomness system
+## Seeding
+Game seed
+Turn seeds
+Randomness system
 
-Three.js render setup
+## Three.js render
 WebGPU
 Inspector
 Renderer
@@ -128,23 +128,25 @@ Start/stop render loop
 Add/remove pre/post render updates?
 Clock/Timer? (should be global?)
 
-Scene
+## Scene
 Groups
 Static group
 Separate Player vs Opponent groups
 
-Game camera
+## Game camera
 Rig
 Shake
 Zoom in/out
 Fading aka eyes closing
 Update, onResize
 
-Debug camera
+## Debug camera
 Special shortcuts
 Orbit camera
 Special click on any mesh -> centers orbit around it
 
+## Debug mode
+Shift + D
 Scene helpers for debugging
 Special shortcut toggle
 Game camera
@@ -154,33 +156,34 @@ Player/opponent dice placeholders
 Player/opponent cup
 Player/opponent roll placement
 
-Lighting
+## Lighting
 Candle flame light
 Candle flame visual + TSL animation
 Candle flame group, update/dispose
 Sun spotlight
 Sun gobo + TSL animation, update/dispose
 
-Global assets loader component
+## Global assets loader component
 KCD2 game loading visuals
 Three.js Load Manager with percentages?
 
-Preload fonts, main UI assets
+## Preload fonts, main UI assets
 
-Lazy load shared game assets
+## Lazy load shared game assets
 
+## Animations control
 Lerp/slerp animation system instead of Tween?
 Just read current state and render pipeline
 
-Selected theme loader + applier
+## Selected theme loader + applier
 
-Dust particles
+## Dust particles
 Update/dispose
 
-Integrate raycaster with interactions system
+## Integrate raycaster with interactions system
 Pub/sub system?
 
-Cup animations
+## Cup animations
 Appear
 Cover dice
 Pre-shake position
@@ -189,7 +192,7 @@ Post-shake position
 Reveal dice
 Disappear
 
-Full dice rolling end-to-end
+## Full dice rolling end-to-end
 When game starts both sides have their dice and cups in idle positions
 Click on cup, click on action, press on roll button
 If new turn, animate moving held dice back to dice roll area
@@ -199,11 +202,11 @@ Generate and apply dice values
 When cup reveals, show dice
 Move game camera focus in
 
-Dice held/unheld animation
+## Dice held/unheld animation
 
-Polish .HTML meta tags, icons, manifest, socials, etc.
+## Polish .HTML meta tags, icons, manifest, socials, etc.
 
-Graphical settings
+## Graphical settings
 anti-aliasing: on/off
 pixel ratio: 0.5-2.0
 fps limit: 30, 48, 60, 90, 120
@@ -212,4 +215,5 @@ shadows map: 512, 1024, 2048
 dust: on/off
 game camera shake: on/off
 
-Try out high-res normal maps + lower res albedo, specular, emissive, details
+## Try out high-res details vs low-res colors
+High-res normal maps + lower res albedo, specular, emissive, details

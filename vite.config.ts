@@ -12,9 +12,13 @@ export default defineConfig({
     vitePluginAssetsHeaders(),
   ],
   resolve: {
-    alias: {
-      src: fileURLToPath(new URL("./src", import.meta.url)),
-    },
+    tsconfigPaths: true,
+    alias: [
+      {
+        find: /^three$/,
+        replacement: "three/webgpu",
+      },
+    ],
   },
   assetsInclude: [
     "**/*.webp",

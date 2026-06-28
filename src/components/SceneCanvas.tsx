@@ -1,15 +1,24 @@
-import { onCleanup, onMount } from "solid-js";
+import { createEffect, onCleanup } from "solid-js";
 
-import { mountScene } from "src/three/scene";
+import { sceneState } from "src/state/test";
 
 export function SceneCanvas() {
   let element: undefined | HTMLCanvasElement = undefined;
+  let dispose: undefined | (() => void) = undefined;
 
-  onMount(() => {
-    if (!element) {
+  createEffect(() => {
+    if (!sceneState.started || !element || dispose) {
       return;
     }
-    onCleanup(mountScene(element));
+    const canvas = element;
+    void import("src/render").then((module) => {
+      dispose = module.renderInitialize(canvas);
+      return;
+    });
+  });
+
+  onCleanup(() => {
+    dispose?.();
   });
 
   return (

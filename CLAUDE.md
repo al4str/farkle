@@ -30,4 +30,10 @@
       - And files (like assets, fonts, everything else);
   - Don't write useless/obvious comments if code is readable;
   - Always use named export (unless it breaks something, e.g. routing library);
+  - When exporting anything, use namespace reverse notation:
+    - Wrong: `export type ActionSubject`;
+    - Correct: `export type NamespaceSubjectAction`;
+  - When typing with `null` or `undefined` put them before, not after:
+    - Wrong: `type Foo = string | underfined`;
+    - Correct: `type Foo = undefined | string`;
 - Run Oxlint/TypeScript checks via `bun run check`;
