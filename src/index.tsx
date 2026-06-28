@@ -3,6 +3,7 @@ import { render } from "solid-js/web";
 
 import { loopInitialize, loopSetTargetFps } from "src/loop";
 import { interactionsInitialize } from "src/interactions";
+import { audioInitialize } from "src/audio";
 import { setSceneState } from "src/state/test";
 import { App } from "src/App";
 import "src/index.css";
@@ -14,5 +15,6 @@ if (root) {
   loopSetTargetFps(30);
   setSceneState("targetFps", 30);
   interactionsInitialize();
+  audioInitialize();
   render(() => <App />, root);
 }

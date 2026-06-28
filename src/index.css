@@ -46,6 +46,30 @@ body {
   display: block;
 }
 
+.start-screen {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+}
+
+.start-button {
+  padding: 16px 36px;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--accent);
+  background: var(--accent-bg);
+  border: 1px solid var(--accent);
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.start-button:hover {
+  background: color-mix(in srgb, var(--accent) 20%, transparent);
+}
+
 .controls {
   position: fixed;
   top: 16px;
@@ -145,6 +169,20 @@ body {
   border: 1px solid var(--border);
   border-radius: 6px;
   background: none;
+}
+
+.control-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
+.control-section-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-h);
 }
 
 .readouts {
