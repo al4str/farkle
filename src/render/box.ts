@@ -3,11 +3,11 @@ import { createEffect, createRoot } from "solid-js";
 
 import { sceneState, setSceneState } from "src/state/test";
 
-type Results = {
+interface Results {
   mesh: Mesh;
   update: (delta: number) => void;
   dispose: () => void;
-};
+}
 
 export function renderBoxCreate(): Results {
   const geometry = new BoxGeometry(1.4, 1.4, 1.4);

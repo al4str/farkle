@@ -11,11 +11,11 @@ import { renderRendererCreate } from "src/render/renderer";
 import { renderSceneCreate } from "src/render/scene";
 import { noop } from "src/utils/noop";
 
-type State = {
+interface State {
   canvas: null | HTMLCanvasElement;
   boot: null | BootResults;
   disposed: boolean;
-};
+}
 
 const STATE: State = {
   canvas: null,
@@ -39,9 +39,9 @@ export function renderInitialize(canvas: HTMLCanvasElement): () => void {
 
 type BootFunction = (canvas: HTMLCanvasElement) => Promise<BootResults>;
 
-type BootResults = {
+interface BootResults {
   dispose: () => void;
-};
+}
 
 async function boot(canvas: HTMLCanvasElement): Promise<BootResults> {
   const renderer = await renderRendererCreate(canvas);
