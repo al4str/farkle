@@ -1,4 +1,300 @@
 :root {
-  --sans: system-ui, "Segoe UI", Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+  --sans: system-ui, "Segoe UI", Roboto;
+  --mono: ui-monospace, Consolas;
+}
+
+/* REGULAR */
+
+@font-face {
+  font-family: "KCD2";
+  src:
+    url("/assets/fonts/kcd2_extra_bold.woff2") format("woff2"),
+    url("/assets/fonts/kcd2_extra_bold.woff") format("woff");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "KCD2";
+  src:
+    url("/assets/fonts/kcd2_bold.woff2") format("woff2"),
+    url("/assets/fonts/kcd2_bold.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "KCD2";
+  src:
+    url("/assets/fonts/kcd2_bold_italic.woff2") format("woff2"),
+    url("/assets/fonts/kcd2_bold_italic.woff") format("woff");
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "KCD2";
+  src:
+    url("/assets/fonts/kcd2_medium.woff2") format("woff2"),
+    url("/assets/fonts/kcd2_medium.woff") format("woff");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "KCD2";
+  src:
+    url("/assets/fonts/kcd2_medium_italic.woff2") format("woff2"),
+    url("/assets/fonts/kcd2_medium_italic.woff") format("woff");
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "KCD2";
+  src:
+    url("/assets/fonts/kcd2_regular.woff2") format("woff2"),
+    url("/assets/fonts/kcd2_regular.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "KCD2";
+  src:
+    url("/assets/fonts/kcd2_italic.woff2") format("woff2"),
+    url("/assets/fonts/kcd2_italic.woff") format("woff");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "KCD2";
+  src:
+    url("/assets/fonts/kcd2_thin.woff2") format("woff2"),
+    url("/assets/fonts/kcd2_thin.woff") format("woff");
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "KCD2";
+  src:
+    url("/assets/fonts/kcd2_thin_italic.woff2") format("woff2"),
+    url("/assets/fonts/kcd2_thin_italic.woff") format("woff");
+  font-weight: 100;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* DISPLAY */
+
+@font-face {
+  font-family: "KCD2 Display";
+  src:
+    url("/assets/fonts/kcd2_display_extra_bold.woff2") format("woff2"),
+    url("/assets/fonts/kcd2_display_extra_bold.woff") format("woff");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "KCD2 Display";
+  src:
+    url("/assets/fonts/kcd2_display_extra_bold_italic.woff2") format("woff2"),
+    url("/assets/fonts/kcd2_display_extra_bold_italic.woff") format("woff");
+  font-weight: 800;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "KCD2 Display";
+  src:
+    url("/assets/fonts/kcd2_display_bold.woff2") format("woff2"),
+    url("/assets/fonts/kcd2_display_bold.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "KCD2 Display";
+  src:
+    url("/assets/fonts/kcd2_display_bold_italic.woff2") format("woff2"),
+    url("/assets/fonts/kcd2_display_bold_italic.woff") format("woff");
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "KCD2 Display";
+  src:
+    url("/assets/fonts/kcd2_display_medium.woff2") format("woff2"),
+    url("/assets/fonts/kcd2_display_medium.woff") format("woff");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "KCD2 Display";
+  src:
+    url("/assets/fonts/kcd2_display_medium_italic.woff2") format("woff2"),
+    url("/assets/fonts/kcd2_display_medium_italic.woff") format("woff");
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "KCD2 Display";
+  src:
+    url("/assets/fonts/kcd2_display.woff2") format("woff2"),
+    url("/assets/fonts/kcd2_display.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "KCD2 Display";
+  src:
+    url("/assets/fonts/kcd2_display_italic.woff2") format("woff2"),
+    url("/assets/fonts/kcd2_display_italic.woff") format("woff");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "KCD2 Display";
+  src:
+    url("/assets/fonts/kcd2_display_thin.woff2") format("woff2"),
+    url("/assets/fonts/kcd2_display_thin.woff") format("woff");
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "KCD2 Display";
+  src:
+    url("/assets/fonts/kcd2_display_thin_italic.woff2") format("woff2"),
+    url("/assets/fonts/kcd2_display_thin_italic.woff") format("woff");
+  font-weight: 100;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* SUBHEAD */
+
+@font-face {
+  font-family: "KCD2 Subhead";
+  src:
+    url("/assets/fonts/kcd2_subhead_extra_bold.woff2") format("woff2"),
+    url("/assets/fonts/kcd2_subhead_extra_bold.woff") format("woff");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "KCD2 Subhead";
+  src:
+    url("/assets/fonts/kcd2_subhead_extra_bold_italic.woff2") format("woff2"),
+    url("/assets/fonts/kcd2_subhead_extra_bold_italic.woff") format("woff");
+  font-weight: 800;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "KCD2 Subhead";
+  src:
+    url("/assets/fonts/kcd2_subhead_bold.woff2") format("woff2"),
+    url("/assets/fonts/kcd2_subhead_bold.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "KCD2 Subhead";
+  src:
+    url("/assets/fonts/kcd2_subhead_bold_italic.woff2") format("woff2"),
+    url("/assets/fonts/kcd2_subhead_bold_italic.woff") format("woff");
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "KCD2 Subhead";
+  src:
+    url("/assets/fonts/kcd2_subhead_medium.woff2") format("woff2"),
+    url("/assets/fonts/kcd2_subhead_medium.woff") format("woff");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "KCD2 Subhead";
+  src:
+    url("/assets/fonts/kcd2_subhead_medium_italic.woff2") format("woff2"),
+    url("/assets/fonts/kcd2_subhead_medium_italic.woff") format("woff");
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "KCD2 Subhead";
+  src:
+    url("/assets/fonts/kcd2_subhead.woff2") format("woff2"),
+    url("/assets/fonts/kcd2_subhead.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "KCD2 Subhead";
+  src:
+    url("/assets/fonts/kcd2_subhead_italic.woff2") format("woff2"),
+    url("/assets/fonts/kcd2_subhead_italic.woff") format("woff");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "KCD2 Subhead";
+  src:
+    url("/assets/fonts/kcd2_subhead_thin.woff2") format("woff2"),
+    url("/assets/fonts/kcd2_subhead_thin.woff") format("woff");
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "KCD2 Subhead";
+  src:
+    url("/assets/fonts/kcd2_subhead_thin_italic.woff2") format("woff2"),
+    url("/assets/fonts/kcd2_subhead_thin_italic.woff") format("woff");
+  font-weight: 100;
+  font-style: italic;
+  font-display: swap;
 }

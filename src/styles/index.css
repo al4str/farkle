@@ -4,6 +4,7 @@
 @import "src/styles/test.css";
 
 :root {
+  /* TODO: delete later */
   --text: #6b6375;
   --text-h: #08060d;
   --bg: #ffffff;
@@ -11,25 +12,87 @@
   --accent: #aa3bff;
   --accent-bg: rgba(170, 59, 255, 0.1);
   --accent-border: rgba(170, 59, 255, 0.5);
+  /* ^ */
+  --font-serif: "KCD2", ui-serif, Times New Roman, serif;
+  --font-display: "KCD2 Display";
+  --font-subhead: "KCD2 Subhead";
+  --color-white-ish: #F3F2DE;
+  --color-yellow-ish: #FDEC88;
+  --color-gray-ish: #BBB5A2;
+  --color-black-ish: #261703;
+  --color-document-background: #0F172A;
+  --drop-shadow-text: 0 1px 2px rgba(0, 0, 0, 0.75);
+  --drop-shadow-frame: 0 14px 14px rgba(0, 0, 0, 0.75);
+  --shadow-frame: 0 0 14px 14px rgba(0, 0, 0, 0.75);
 
-  font: 16px/145% var(--sans);
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
+  width: 100%;
+  height: 100%;
+  font-family: "KCD2", serif;
+  font-weight: normal;
+  font-size: 1rem;
+  line-height: 1.375;
+  color-scheme: dark;
+  color: var(--color-white-ish);
+  background:
+    url("/background.jpg") repeat,
+    var(--color-document-background);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-  }
+body {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+:focus-visible {
+  outline-offset: -2px;
+  outline-color: var(--color-yellow-ish);
+}
+
+#root {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+#render,
+#overlay,
+#confetti {
+  isolation: isolate;
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+#render {
+  z-index: 0;
+  transition: opacity 0.15s linear;
+  pointer-events: none;
+  touch-action: none;
+}
+
+#overlay {
+  z-index: 1;
+  pointer-events: none;
+}
+
+#ui {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+#confetti {
+  z-index: 3;
+  pointer-events: none;
 }

@@ -47,7 +47,7 @@
   background: var(--accent-bg);
   font-family: var(--mono), monospace;
   font-size: 11px;
-  color: var(--text-h);
+  color: var(--text);
 }
 
 .demo-log li {

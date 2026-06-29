@@ -137,17 +137,12 @@ export function TestInteractions() {
         <For each={DEMO_ACTIONS}>
           {(action) => (
             <UiButton
-              actionId={action.def.id}
-              holdMeter={!!action.def.holdThreshold}
               class={styles["demo-action"]}
-            >
-              <span class={styles["demo-action-label"]}>
-                {action.label}
-              </span>
-              <span class={styles["demo-action-hint"]}>
-                {action.hint}
-              </span>
-            </UiButton>
+              actionId={action.def.id}
+              bindings={action.def.bindings}
+              holdTime={action.def.holdThreshold}
+              label={action.label}
+            />
           )}
         </For>
       </div>

@@ -1,11 +1,17 @@
-.button {
-  padding: 8px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background: transparent;
-  color: var(--text-h);
+.ui-action-button {
+  appearance: none;
+  margin: 0;
+  border: none;
+  background: none;
   font: inherit;
-  cursor: pointer;
+  color: inherit;
+  display: block;
+  width: fit-content;
+  min-height: 44px;
+  padding: 8px;
+  border-radius: 6px;
+  pointer-events: auto;
+  cursor: default;
   user-select: none;
   -webkit-user-select: none;
   -webkit-touch-callout: none;
@@ -13,32 +19,104 @@
   touch-action: none;
 }
 
-.button:disabled {
-  cursor: not-allowed;
+.ui-action-button:focus-visible {
+  outline: 2px solid var(--color-yellow-ish);
+  outline-offset: 2px;
+}
+
+.ui-action-button:disabled,
+.ui-action-button[aria-disabled="true"] {
   opacity: 0.5;
+  cursor: not-allowed;
 }
 
-.button[data-pressed] {
-  border-color: var(--accent);
-  background: var(--accent-bg);
-}
-
-.button[data-holding] {
-  border-color: var(--accent);
-  background: var(--accent);
-  color: var(--bg);
-}
-
-.meter {
-  margin-top: 4px;
-  height: 4px;
-  border-radius: 2px;
-  background: var(--border);
-  overflow: hidden;
-}
-
-.bar {
-  display: block;
+.ui-action-button--row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
   height: 100%;
-  background: var(--accent);
+  pointer-events: none;
+}
+
+.ui-action-button--label {
+  font-weight: 400;
+  text-align: right;
+  text-shadow: var(--drop-shadow-text);
+}
+
+.ui-action-button--key {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: safe center;
+  height: 32px;
+  padding-inline: 8px;
+}
+
+.ui-action-button--key-long {
+  min-width: 32px;
+  max-width: 72px;
+}
+
+.ui-action-button--key-small {
+  width: 32px;
+}
+
+.ui-action-button--key-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100% 100%;
+}
+
+.ui-action-button--key-label {
+  position: relative;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.7;
+  color: var(--color-black-ish);
+}
+
+.ui-action-button[data-down] .ui-action-button--label,
+.ui-action-button[data-down] .ui-action-button--key-bg,
+.ui-action-button[data-down] .ui-action-button--key-label {
+  filter: brightness(0.75);
+}
+
+.ui-action-button--hold-preview {
+  position: absolute;
+  right: -8px;
+  bottom: -2px;
+  width: 16px;
+  height: 16px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  pointer-events: none;
+}
+
+.ui-action-button--hold-track {
+  position: absolute;
+  left: -20%;
+  top: -20%;
+  width: 140%;
+  height: 140%;
+  background-repeat: no-repeat;
+  background-position: center;
+  pointer-events: none;
+}
+
+.ui-action-button--hold-indicator {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  pointer-events: none;
 }

@@ -20,3 +20,8 @@
   font-weight: 600;
   color: var(--text-h);
 }
+
+.text-minor {
+  color: var(--color-gray-ish);
+  text-shadow: var(--drop-shadow-text);
+}
