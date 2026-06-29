@@ -1,13 +1,13 @@
 import { createEffect, onCleanup } from "solid-js";
 
-import { sceneState } from "src/state/test";
+import { testState } from "src/test/helpers/state";
 
-export function SceneCanvas() {
+export function TestCanvas() {
   let element: undefined | HTMLCanvasElement = undefined;
   let dispose: undefined | (() => void) = undefined;
 
   createEffect(() => {
-    if (!sceneState.started || !element || dispose) {
+    if (!testState.started || !element || dispose) {
       return;
     }
     const canvas = element;

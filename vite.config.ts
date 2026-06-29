@@ -6,9 +6,12 @@ import type { Plugin, UserConfig } from "vite";
 import { defineConfig } from "vite";
 import vitePluginSolid from "vite-plugin-solid";
 
+import { vitePluginCssModulesDts } from "./vite/cssModulesDts.ts";
+
 export default defineConfig({
   plugins: [
     vitePluginSolid(),
+    vitePluginCssModulesDts(),
     vitePluginAssetsHeaders(),
   ],
   resolve: {

@@ -5,11 +5,13 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "css-types": "bun vite/cssModulesDts.ts",
+    "build": "bun vite/cssModulesDts.ts && tsc -b && vite build",
     "preview": "vite preview",
-    "check": "oxlint && tsc -b"
+    "check": "bun vite/cssModulesDts.ts && oxlint && tsc -b"
   },
   "dependencies": {
+    "@solidjs/router": "^0.16.1",
     "meshoptimizer": "^1.1.1",
     "nanoid": "^5.1.16",
     "solid-js": "^1.9.13",

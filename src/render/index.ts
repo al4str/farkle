@@ -2,7 +2,7 @@ import { createEffect, createRoot } from "solid-js";
 
 import type { LoopUpdateCallback } from "src/loop";
 import { loopAddUpdate, loopGetFps, loopRemoveUpdate } from "src/loop";
-import { sceneState, setSceneState } from "src/state/test";
+import { testState, testStateSet } from "src/test/helpers/state";
 import { renderBoxCreate } from "src/render/box";
 import { renderCameraCreate, renderCameraResize } from "src/render/camera";
 import { renderInspectorAttach } from "src/render/inspector";
@@ -33,7 +33,7 @@ export function renderInitialize(canvas: HTMLCanvasElement): () => void {
     STATE.boot?.dispose();
     STATE.boot = null;
     STATE.canvas = null;
-    setSceneState("loaded", false);
+    testStateSet("loaded", false);
   };
 }
 
@@ -57,7 +57,7 @@ async function boot(canvas: HTMLCanvasElement): Promise<BootResults> {
   const disposeRoot = createRoot((dispose) => {
     createEffect(() => {
       const token = ++inspectorToken;
-      if (sceneState.inspectorEnabled) {
+      if (testState.inspectorEnabled) {
         void renderInspectorAttach(renderer).then((detach) => {
           if (token !== inspectorToken) {
             detach();
@@ -95,11 +95,11 @@ async function boot(canvas: HTMLCanvasElement): Promise<BootResults> {
 
     frame += 1;
     if (frame % 10 === 0) {
-      setSceneState("fps", loopGetFps());
+      testStateSet("fps", loopGetFps());
     }
 
     renderer.render(scene, camera);
-    if (sceneState.inspectorEnabled) {
+    if (testState.inspectorEnabled) {
       void renderer.resolveTimestampsAsync();
     }
   };
@@ -125,7 +125,7 @@ function executeBootFunction(bootFunction: BootFunction, canvas: HTMLCanvasEleme
       return;
     }
     STATE.boot = handle;
-    setSceneState("loaded", true);
+    testStateSet("loaded", true);
     return;
   });
 }

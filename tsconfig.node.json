@@ -41,5 +41,7 @@
     "allowUnusedLabels": false,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["vite.config.ts"]
+  "include": ["vite.config.ts",
+    "vite/cssModulesDts.ts"
+  ]
 }

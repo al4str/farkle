@@ -1,0 +1,35 @@
+/* Shared, cross-component primitives referenced by plain class strings.
+   Component-specific styling lives in co-located `*.module.css` files. */
+
+.control-button {
+  padding: 10px 14px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent);
+  background: var(--accent-bg);
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.control-button:disabled {
+  color: var(--text);
+  background: transparent;
+  border-color: var(--border);
+  cursor: default;
+}
+
+.control-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-h);
+}
+
+.demo-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}

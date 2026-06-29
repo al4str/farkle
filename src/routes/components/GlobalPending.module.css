@@ -1,0 +1,27 @@
+.global-pending {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  height: 3px;
+  overflow: hidden;
+  background: var(--accent-bg);
+}
+
+.global-pending-bar {
+  display: block;
+  height: 100%;
+  width: 40%;
+  background: var(--accent);
+  animation: global-pending-slide 1s ease-in-out infinite;
+}
+
+@keyframes global-pending-slide {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(350%);
+  }
+}

@@ -1,7 +1,7 @@
 import type { SetStoreFunction } from "solid-js/store";
 import { createStore } from "solid-js/store";
 
-export interface StateTest {
+export interface TestState {
   rotationSpeed: number;
   color: string;
   wireframe: boolean;
@@ -14,7 +14,7 @@ export interface StateTest {
   loaded: boolean;
 }
 
-const INITIAL_STATE: StateTest = {
+const INITIAL_STATE: TestState = {
   rotationSpeed: 1,
   color: "#aa3bff",
   wireframe: false,
@@ -27,16 +27,16 @@ const INITIAL_STATE: StateTest = {
   loaded: false,
 };
 
-export const [sceneState, setSceneState] = loadStore();
+export const [testState, testStateSet] = loadStore();
 
-type Store = [state: StateTest, setState: SetStoreFunction<StateTest>];
+type Store = [state: TestState, setState: SetStoreFunction<TestState>];
 
 function loadStore(): Store {
   const data = import.meta.hot?.data;
   if (data && isStore(data.store)) {
     return data.store;
   }
-  const created = createStore<StateTest>(INITIAL_STATE);
+  const created = createStore<TestState>(INITIAL_STATE);
   if (data) {
     data.store = created;
   }

@@ -5,6 +5,8 @@
 .env
 .certs
 
+*.module.css.d.ts
+
 /node_modules
 /public/assets
 /dist

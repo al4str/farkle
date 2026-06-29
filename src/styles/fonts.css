@@ -1,0 +1,5 @@
+/* Font tokens. `@font-face` declarations for self-hosted webfonts go here. */
+:root {
+  --sans: system-ui, "Segoe UI", Roboto, sans-serif;
+  --mono: ui-monospace, Consolas, monospace;
+}

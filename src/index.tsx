@@ -1,20 +1,28 @@
 /* @refresh reload */
 import { render } from "solid-js/web";
+import { Router } from "@solidjs/router";
 
 import { loopInitialize, loopSetTargetFps } from "src/loop";
 import { interactionsInitialize } from "src/interactions";
 import { audioInitialize } from "src/audio";
-import { setSceneState } from "src/state/test";
-import { App } from "src/App";
-import "src/index.css";
+import { testStateSet } from "src/test/helpers/state";
+import { RoutesLayout } from "src/routes/components/Layout";
+import { routesConfig } from "src/routes";
 
 const root = window.document.getElementById("root");
 
 if (root) {
   loopInitialize();
   loopSetTargetFps(30);
-  setSceneState("targetFps", 30);
+  testStateSet("targetFps", 30);
   interactionsInitialize();
   audioInitialize();
-  render(() => <App />, root);
+  render(
+    () => (
+      <Router root={RoutesLayout}>
+        {routesConfig}
+      </Router>
+    ),
+    root,
+  );
 }

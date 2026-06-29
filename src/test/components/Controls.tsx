@@ -1,31 +1,32 @@
 import { loopSetTargetFps } from "src/loop";
 import { audioSetMuted, audioSetVolume, audioSfxPlay, audioUiPlay } from "src/audio";
 import { audioState } from "src/audio/state";
-import { sceneState, setSceneState } from "src/state/test";
-import { InteractionsDemo } from "src/components/InteractionsDemo";
+import { testState, testStateSet } from "src/test/helpers/state";
+import { TestInteractions } from "src/test/components/Interactions";
+import styles from "src/test/components/Controls.module.css";
 
 const DICE_RATE_MIN = 0.9;
 
 const DICE_RATE_SPREAD = 0.2;
 
-export function Controls() {
+export function TestControls() {
   return (
-    <aside class="controls">
-      <h1 class="controls-title">
+    <aside class={styles.controls}>
+      <h1 class={styles["controls-title"]}>
         Shared store demo
       </h1>
-      <p class="controls-hint">
+      <p class={styles["controls-hint"]}>
         Solid.js UI and three.js WebGPU, one store.
       </p>
-      <label class="control">
+      <label class={styles.control}>
         <span class="control-label">
           Target FPS
         </span>
         <select
-          value={sceneState.targetFps}
+          value={testState.targetFps}
           onInput={(event) => {
             const targetFps = parseInt(event.currentTarget.value, 10);
-            setSceneState("targetFps", targetFps);
+            testStateSet("targetFps", targetFps);
             loopSetTargetFps(targetFps);
           }}
         >
@@ -35,11 +36,11 @@ export function Controls() {
           <option value="144">144</option>
         </select>
       </label>
-      <label class="control">
+      <label class={styles.control}>
         <span class="control-label">
           Rotation speed
-          <output class="control-value">
-            {sceneState.rotationSpeed.toFixed(2)}
+          <output class={styles["control-value"]}>
+            {testState.rotationSpeed.toFixed(2)}
           </output>
         </span>
         <input
@@ -47,77 +48,77 @@ export function Controls() {
           min="0"
           max="4"
           step="0.05"
-          value={sceneState.rotationSpeed}
-          onInput={(event) => setSceneState("rotationSpeed", event.currentTarget.valueAsNumber)}
+          value={testState.rotationSpeed}
+          onInput={(event) => testStateSet("rotationSpeed", event.currentTarget.valueAsNumber)}
         />
       </label>
-      <label class="control control-row">
+      <label class={`${styles.control} ${styles["control-row"]}`}>
         <span class="control-label">
           Color
         </span>
         <input
           type="color"
-          value={sceneState.color}
-          onInput={(event) => setSceneState("color", event.currentTarget.value)}
+          value={testState.color}
+          onInput={(event) => testStateSet("color", event.currentTarget.value)}
         />
       </label>
-      <label class="control control-row">
+      <label class={`${styles.control} ${styles["control-row"]}`}>
         <span class="control-label">
           Auto rotate
         </span>
         <input
           type="checkbox"
-          checked={sceneState.autoRotate}
-          onChange={(event) => setSceneState("autoRotate", event.currentTarget.checked)}
+          checked={testState.autoRotate}
+          onChange={(event) => testStateSet("autoRotate", event.currentTarget.checked)}
         />
       </label>
-      <label class="control control-row">
+      <label class={`${styles.control} ${styles["control-row"]}`}>
         <span class="control-label">
           Wireframe
         </span>
         <input
           type="checkbox"
-          checked={sceneState.wireframe}
-          onChange={(event) => setSceneState("wireframe", event.currentTarget.checked)}
+          checked={testState.wireframe}
+          onChange={(event) => testStateSet("wireframe", event.currentTarget.checked)}
         />
       </label>
-      <label class="control control-row">
+      <label class={`${styles.control} ${styles["control-row"]}`}>
         <span class="control-label">
           WebGPU inspector
         </span>
         <input
           type="checkbox"
-          disabled={!sceneState.loaded}
-          checked={sceneState.inspectorEnabled}
-          onChange={(event) => setSceneState("inspectorEnabled", event.currentTarget.checked)}
+          disabled={!testState.loaded}
+          checked={testState.inspectorEnabled}
+          onChange={(event) => testStateSet("inspectorEnabled", event.currentTarget.checked)}
         />
       </label>
-      <dl class="readouts">
-        <div class="readout">
+      <dl class={styles.readouts}>
+        <div class={styles.readout}>
           <dt>
             rotationY
           </dt>
           <dd>
-            {sceneState.rotationY.toFixed(2)} rad
+            {testState.rotationY.toFixed(2)} rad
           </dd>
         </div>
-        <div class="readout">
+        <div class={styles.readout}>
           <dt>
             fps
           </dt>
           <dd>
-            {sceneState.fps}
+            {testState.fps}
           </dd>
         </div>
       </dl>
-      <div class="control-section">
-        <span class="control-section-title">
+      <div class={styles["control-section"]}>
+        <span class={styles["control-section-title"]}>
           Audio
         </span>
-        <label class="control">
+        <label class={styles.control}>
           <span class="control-label">
             Master volume
-            <output class="control-value">
+            <output class={styles["control-value"]}>
               {Math.round(audioState.master * 100)}%
             </output>
           </span>
@@ -130,10 +131,10 @@ export function Controls() {
             onInput={(event) => audioSetVolume("master", event.currentTarget.valueAsNumber)}
           />
         </label>
-        <label class="control">
+        <label class={styles.control}>
           <span class="control-label">
             SFX volume
-            <output class="control-value">
+            <output class={styles["control-value"]}>
               {Math.round(audioState.sfx * 100)}%
             </output>
           </span>
@@ -146,7 +147,7 @@ export function Controls() {
             onInput={(event) => audioSetVolume("sfx", event.currentTarget.valueAsNumber)}
           />
         </label>
-        <label class="control control-row">
+        <label class={`${styles.control} ${styles["control-row"]}`}>
           <span class="control-label">
             Mute
           </span>
@@ -173,7 +174,7 @@ export function Controls() {
           </button>
         </div>
       </div>
-      <InteractionsDemo />
+      <TestInteractions />
     </aside>
   );
 }

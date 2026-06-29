@@ -3,6 +3,7 @@ import { createSignal, onCleanup, onMount, For } from "solid-js";
 import type { InteractionEvent, InteractionsActionDefinition } from "src/interactions/types";
 import { interactionsActionHandlers, interactionsDefineAction, interactionsOn, interactionsRemoveAction, interactionsView } from "src/interactions";
 import { interactionsState } from "src/interactions/state";
+import styles from "src/test/components/Interactions.module.css";
 
 interface DemoAction {
   def: InteractionsActionDefinition;
@@ -100,7 +101,7 @@ const DEMO_ACTIONS: readonly DemoAction[] = [
 
 const LOG_LIMIT = 8;
 
-export function InteractionsDemo() {
+export function TestInteractions() {
   const [log, setLog] = createSignal<readonly string[]>([]);
 
   onMount(() => {
@@ -122,12 +123,12 @@ export function InteractionsDemo() {
   });
 
   return (
-    <section class="interactions-demo">
+    <section class={styles["interactions-demo"]}>
       <div class="control-label">
         <span>
           Interactions demo
         </span>
-        <span class="device-badge">
+        <span class={styles["device-badge"]}>
           {interactionsState.lastDevice}
         </span>
       </div>
@@ -139,21 +140,21 @@ export function InteractionsDemo() {
               <button
                 {...interactionsActionHandlers(action.def.id)}
                 type="button"
-                class="demo-action"
+                class={styles["demo-action"]}
                 classList={{
-                  pressed: view().pressed,
-                  holding: view().holding,
+                  [styles.pressed]: view().pressed,
+                  [styles.holding]: view().holding,
                 }}
               >
-                <span class="demo-action-label">
+                <span class={styles["demo-action-label"]}>
                   {action.label}
                 </span>
-                <span class="demo-action-hint">
+                <span class={styles["demo-action-hint"]}>
                   {action.hint}
                 </span>
-                <span class="demo-meter">
+                <span class={styles["demo-meter"]}>
                   <span
-                    class="demo-bar"
+                    class={styles["demo-bar"]}
                     style={{
                       width: `${Math.round(view().holdProgress * 100)}%`,
                     }}
@@ -164,11 +165,11 @@ export function InteractionsDemo() {
           }}
         </For>
       </div>
-      <ol class="demo-log">
+      <ol class={styles["demo-log"]}>
         <For
           each={log()}
           fallback={
-            <li class="demo-log-empty">interact to see events…</li>
+            <li class={styles["demo-log-empty"]}>interact to see events…</li>
           }
         >
           {(line) => (
