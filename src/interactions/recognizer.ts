@@ -1,4 +1,4 @@
-import type { InteractionEvent, InteractionsActionDefinition, InteractionsActionView, InteractionsDevice, InteractionsKeyBinding, InteractionsModifierSpec, InteractionsPointerBinding, InteractionsResolvedDefinition, InteractionsSourceId } from "src/interactions/types";
+import type { InteractionEvent, InteractionsActionDefinition, InteractionsActionId, InteractionsActionView, InteractionsDevice, InteractionsKeyBinding, InteractionsModifierSpec, InteractionsPointerBinding, InteractionsResolvedDefinition, InteractionsSourceId } from "src/interactions/types";
 import { clamp } from "src/utils/clamp";
 
 export interface InteractionsRecognizerDefaults {
@@ -34,8 +34,8 @@ export function interactionsRecognizerKeySourceId(binding: InteractionsKeyBindin
   return `key:${binding.code}:${interactionsRecognizerModifierMask(binding.modifiers)}`;
 }
 
-export function interactionsRecognizerPointerSourceId(binding: InteractionsPointerBinding): InteractionsSourceId {
-  return `ptr:${binding.button === undefined ? "any" : String(binding.button)}`;
+export function interactionsRecognizerPointerSourceId(actionId: InteractionsActionId, binding: InteractionsPointerBinding): InteractionsSourceId {
+  return `ptr:${actionId}:${binding.button === undefined ? "any" : String(binding.button)}`;
 }
 
 export function interactionsRecognizerResolveDefinition(def: InteractionsActionDefinition, defaults: InteractionsRecognizerDefaults): InteractionsResolvedDefinition {

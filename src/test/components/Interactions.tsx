@@ -1,8 +1,9 @@
 import { createSignal, onCleanup, onMount, For } from "solid-js";
 
 import type { InteractionEvent, InteractionsActionDefinition } from "src/interactions/types";
-import { interactionsActionHandlers, interactionsDefineAction, interactionsOn, interactionsRemoveAction, interactionsView } from "src/interactions";
+import { interactionsDefineAction, interactionsOn, interactionsRemoveAction } from "src/interactions";
 import { interactionsState } from "src/interactions/state";
+import { UiButton } from "src/ui/Button";
 import styles from "src/test/components/Interactions.module.css";
 
 interface DemoAction {
@@ -47,11 +48,11 @@ const DEMO_ACTIONS: readonly DemoAction[] = [
     },
   },
   {
-    label: "Hold (0.6s)",
+    label: "Hold (1.5s)",
     hint: "key H / left click",
     def: {
       id: "demo.hold",
-      holdThreshold: 0.6,
+      holdThreshold: 1.5,
       bindings: [
         {
           kind: "key",
@@ -99,7 +100,7 @@ const DEMO_ACTIONS: readonly DemoAction[] = [
   },
 ];
 
-const LOG_LIMIT = 8;
+const LOG_LIMIT = 64;
 
 export function TestInteractions() {
   const [log, setLog] = createSignal<readonly string[]>([]);
@@ -134,42 +135,29 @@ export function TestInteractions() {
       </div>
       <div class="demo-grid">
         <For each={DEMO_ACTIONS}>
-          {(action) => {
-            const view = () => interactionsView(action.def.id);
-            return (
-              <button
-                {...interactionsActionHandlers(action.def.id)}
-                type="button"
-                class={styles["demo-action"]}
-                classList={{
-                  [styles.pressed]: view().pressed,
-                  [styles.holding]: view().holding,
-                }}
-              >
-                <span class={styles["demo-action-label"]}>
-                  {action.label}
-                </span>
-                <span class={styles["demo-action-hint"]}>
-                  {action.hint}
-                </span>
-                <span class={styles["demo-meter"]}>
-                  <span
-                    class={styles["demo-bar"]}
-                    style={{
-                      width: `${Math.round(view().holdProgress * 100)}%`,
-                    }}
-                  />
-                </span>
-              </button>
-            );
-          }}
+          {(action) => (
+            <UiButton
+              actionId={action.def.id}
+              holdMeter={!!action.def.holdThreshold}
+              class={styles["demo-action"]}
+            >
+              <span class={styles["demo-action-label"]}>
+                {action.label}
+              </span>
+              <span class={styles["demo-action-hint"]}>
+                {action.hint}
+              </span>
+            </UiButton>
+          )}
         </For>
       </div>
       <ol class={styles["demo-log"]}>
         <For
           each={log()}
           fallback={
-            <li class={styles["demo-log-empty"]}>interact to see events…</li>
+            <li class={styles["demo-log-empty"]}>
+              interact to see events…
+            </li>
           }
         >
           {(line) => (

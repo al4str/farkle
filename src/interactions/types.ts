@@ -105,5 +105,4 @@ export interface InteractionsPointerHandlers {
   onPointerUp: (event: PointerEvent) => void;
   onPointerLeave: (event: PointerEvent) => void;
   onPointerCancel: (event: PointerEvent) => void;
-  onLostPointerCapture: (event: PointerEvent) => void;
 }

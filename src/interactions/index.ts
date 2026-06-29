@@ -13,8 +13,8 @@ import { interactionsGamepadPoll } from "src/interactions/sources/gamepad";
 import { interactionsState, interactionsStateSet } from "src/interactions/state";
 
 export const INTERACTIONS_DEFAULTS: InteractionsRecognizerDefaults = {
-  holdThreshold: 0.4,
-  clickWindow: 0.4,
+  holdThreshold: 0.5,
+  clickWindow: 0.2,
   doubleClickWindow: 0.3,
 };
 
@@ -71,8 +71,7 @@ export function interactionsInitialize(): void {
   STATE.initialized = true;
   STATE.keyboard = interactionsKeyboardCreate({
     lookupCode: (code) => STATE.keyIndex.get(code) ?? [],
-    allKeySources: () => [...STATE.sourceOwners.keys()].filter((source) =>
-      source.startsWith("key:")),
+    allKeySources: () => [...STATE.sourceOwners.keys()].filter((source) => source.startsWith("key:")),
     now: interactionsNow,
     activate: dispatchActivate,
     deactivate: dispatchDeactivate,
@@ -140,12 +139,7 @@ export function interactionsRemoveAction(id: InteractionsActionId): void {
   unindexAction(runtime);
   STATE.actions.delete(id);
   STATE.dirty.delete(id);
-  interactionsStateSet(
-    "actions",
-    produce((actions) => {
-      delete actions[id];
-    }),
-  );
+  interactionsStateSet("actions", produce((actions) => { delete actions[id]; }));
 }
 
 export function interactionsOn(actionIdOrHandler: InteractionsActionId | InteractionHandler, maybeHandler?: InteractionHandler): () => void {
@@ -259,7 +253,7 @@ function indexAction(runtime: InteractionsRecognizerActionRuntime): void {
       }
     }
     else {
-      const sourceId = interactionsRecognizerPointerSourceId(binding);
+      const sourceId = interactionsRecognizerPointerSourceId(actionId, binding);
       addOwner(sourceId, actionId);
       if (binding.button === undefined) {
         pointerCandidates.push({ sourceId });
@@ -292,7 +286,7 @@ function unindexAction(runtime: InteractionsRecognizerActionRuntime): void {
       }
     }
     else {
-      removeOwner(interactionsRecognizerPointerSourceId(binding), actionId);
+      removeOwner(interactionsRecognizerPointerSourceId(actionId, binding), actionId);
     }
   }
   STATE.pointerIndex.delete(actionId);

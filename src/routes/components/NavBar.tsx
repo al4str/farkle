@@ -8,10 +8,16 @@ export function RoutesNavBar() {
       <A
         class={styles["nav-link"]}
         activeClass={styles["is-active"]}
-        end={true}
-        href="/"
+        href="/test/canvas"
       >
-        Test
+        Canvas
+      </A>
+      <A
+        class={styles["nav-link"]}
+        activeClass={styles["is-active"]}
+        href="/test/interactions"
+      >
+        Interactions
       </A>
       <A
         class={styles["nav-link"]}

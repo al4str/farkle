@@ -2,12 +2,12 @@
 import { render } from "solid-js/web";
 import { Router } from "@solidjs/router";
 
+import { ROUTES_DEFINITION } from "src/routes";
 import { loopInitialize, loopSetTargetFps } from "src/loop";
 import { interactionsInitialize } from "src/interactions";
 import { audioInitialize } from "src/audio";
 import { testStateSet } from "src/test/helpers/state";
 import { RoutesLayout } from "src/routes/components/Layout";
-import { routesConfig } from "src/routes";
 
 const root = window.document.getElementById("root");
 
@@ -20,7 +20,7 @@ if (root) {
   render(
     () => (
       <Router root={RoutesLayout}>
-        {routesConfig}
+        {ROUTES_DEFINITION}
       </Router>
     ),
     root,

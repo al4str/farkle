@@ -30,10 +30,6 @@ export function interactionsPointerCreate(deps: InteractionsPointerDeps): Intera
     handlersFor: (actionId: InteractionsActionId): InteractionsPointerHandlers => {
       return {
         onPointerDown: (event: PointerEvent): void => {
-          const target = event.currentTarget;
-          if (target instanceof Element && !target.hasPointerCapture(event.pointerId)) {
-            target.setPointerCapture(event.pointerId);
-          }
           const now = deps.now();
           for (const candidate of deps.pointerBindings(actionId)) {
             if (buttonMatches(candidate, event.button)) {
@@ -53,9 +49,6 @@ export function interactionsPointerCreate(deps: InteractionsPointerDeps): Intera
           deactivateAll(actionId, true);
         },
         onPointerCancel: (): void => {
-          deactivateAll(actionId, true);
-        },
-        onLostPointerCapture: (): void => {
           deactivateAll(actionId, true);
         },
       };

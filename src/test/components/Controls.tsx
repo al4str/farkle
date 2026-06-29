@@ -2,7 +2,6 @@ import { loopSetTargetFps } from "src/loop";
 import { audioSetMuted, audioSetVolume, audioSfxPlay, audioUiPlay } from "src/audio";
 import { audioState } from "src/audio/state";
 import { testState, testStateSet } from "src/test/helpers/state";
-import { TestInteractions } from "src/test/components/Interactions";
 import styles from "src/test/components/Controls.module.css";
 
 const DICE_RATE_MIN = 0.9;
@@ -174,7 +173,6 @@ export function TestControls() {
           </button>
         </div>
       </div>
-      <TestInteractions />
     </aside>
   );
 }
