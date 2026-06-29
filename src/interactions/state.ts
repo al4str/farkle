@@ -1,9 +1,14 @@
 import type { SetStoreFunction } from "solid-js/store";
 import { createStore } from "solid-js/store";
 
-import type { InteractionsState } from "src/interactions/types";
+import type { InteractionsActionId, InteractionsDevice, InteractionsState } from "src/interactions/types";
 
-const INITIAL_STATE: InteractionsState = {
+interface State {
+  actions: Record<InteractionsActionId, InteractionsState>;
+  lastDevice: InteractionsDevice;
+}
+
+const INITIAL_STATE: State = {
   actions: {},
   lastDevice: "keyboardMouse",
 };
@@ -11,8 +16,8 @@ const INITIAL_STATE: InteractionsState = {
 export const [interactionsState, interactionsStateSet] = loadStore();
 
 type InteractionsStore = [
-  state: InteractionsState,
-  setState: SetStoreFunction<InteractionsState>,
+  state: State,
+  setState: SetStoreFunction<State>,
 ];
 
 function loadStore(): InteractionsStore {
@@ -20,7 +25,7 @@ function loadStore(): InteractionsStore {
   if (data && isStore(data.store)) {
     return data.store;
   }
-  const created = createStore<InteractionsState>(INITIAL_STATE);
+  const created = createStore<State>(INITIAL_STATE);
   if (data) {
     data.store = created;
   }

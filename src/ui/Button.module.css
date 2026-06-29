@@ -88,6 +88,11 @@
   filter: brightness(0.75);
 }
 
+.ui-action-button[data-down] .ui-action-button--key-bg,
+.ui-action-button[data-down] .ui-action-button--key-label {
+  top: 1px;
+}
+
 .ui-action-button--hold-preview {
   position: absolute;
   right: -8px;

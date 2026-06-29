@@ -1,20 +1,35 @@
 export type InteractionsActionId = string;
 
-export type InteractionsSourceId = string;
-
 export type InteractionsDevice = "keyboardMouse" | "gamepad";
 
-export interface InteractionsModifierSpec {
+export interface InteractionsState {
+  pressed: boolean;
+  holding: boolean;
+  holdingProgress: number;
+}
+
+export interface InteractionsDefinition {
+  actionId: InteractionsActionId;
+  bindings: readonly InteractionsBinding[];
+  holdTime?: number;
+  clickWindow?: number;
+}
+
+export type InteractionsDefinitionResolved = Required<InteractionsDefinition>;
+
+export interface InteractionsKeyModifiers {
   shift?: boolean;
   ctrl?: boolean;
   alt?: boolean;
   meta?: boolean;
 }
 
+export type InteractionsKeyModifiersState = Required<InteractionsKeyModifiers>;
+
 export interface InteractionsKeyBinding {
   kind: "key";
   code: string;
-  modifiers?: InteractionsModifierSpec;
+  modifiers?: InteractionsKeyModifiers;
 }
 
 export interface InteractionsPointerBinding {
@@ -24,22 +39,6 @@ export interface InteractionsPointerBinding {
 
 export type InteractionsBinding = InteractionsKeyBinding | InteractionsPointerBinding;
 
-export interface InteractionsActionDefinition {
-  id: InteractionsActionId;
-  bindings: readonly InteractionsBinding[];
-  holdThreshold?: number;
-  clickWindow?: number;
-  doubleClickWindow?: number;
-}
-
-export interface InteractionsResolvedDefinition {
-  id: InteractionsActionId;
-  bindings: readonly InteractionsBinding[];
-  holdThreshold: number;
-  clickWindow: number;
-  doubleClickWindow: number;
-}
-
 interface InteractionEventBase {
   actionId: InteractionsActionId;
   elapsed: number;
@@ -47,22 +46,16 @@ interface InteractionEventBase {
 
 interface InteractionEventPress extends InteractionEventBase {
   type: "press";
-  source: InteractionsSourceId;
   device: InteractionsDevice;
 }
 
 interface InteractionEventRelease extends InteractionEventBase {
   type: "release";
-  source: InteractionsSourceId;
   device: InteractionsDevice;
 }
 
 interface InteractionEventClick extends InteractionEventBase {
   type: "click";
-}
-
-interface InteractionEventDoubleClick extends InteractionEventBase {
-  type: "doubleclick";
 }
 
 interface InteractionEventHoldStart extends InteractionEventBase {
@@ -82,27 +75,25 @@ export type InteractionEvent =
   | InteractionEventPress
   | InteractionEventRelease
   | InteractionEventClick
-  | InteractionEventDoubleClick
   | InteractionEventHoldStart
   | InteractionEventHoldProgress
   | InteractionEventHold;
 
-export type InteractionHandler = (event: InteractionEvent) => void;
-
-export interface InteractionsActionView {
-  pressed: boolean;
-  holding: boolean;
-  holdProgress: number;
-}
-
-export interface InteractionsState {
-  actions: Record<InteractionsActionId, InteractionsActionView>;
-  lastDevice: InteractionsDevice;
-}
+export type InteractionEventHandler = (event: InteractionEvent) => void;
 
 export interface InteractionsPointerHandlers {
   onPointerDown: (event: PointerEvent) => void;
   onPointerUp: (event: PointerEvent) => void;
   onPointerLeave: (event: PointerEvent) => void;
   onPointerCancel: (event: PointerEvent) => void;
+}
+
+export interface InteractionsDispatch {
+  now: () => number;
+  pressKey: (code: string, modifiers: InteractionsKeyModifiersState, now: number) => void;
+  releaseKey: (code: string, now: number) => void;
+  releaseAllKeys: (now: number) => void;
+  pressPointer: (actionId: InteractionsActionId, button: number, now: number) => void;
+  releasePointer: (actionId: InteractionsActionId, button: number, now: number) => void;
+  releaseAllPointers: (actionId: InteractionsActionId, now: number) => void;
 }

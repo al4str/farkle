@@ -1,23 +1,23 @@
 import { createSignal, onCleanup, onMount, For } from "solid-js";
 
-import type { InteractionEvent, InteractionsActionDefinition } from "src/interactions/types";
-import { interactionsDefineAction, interactionsOn, interactionsRemoveAction } from "src/interactions";
+import type { InteractionEvent, InteractionsDefinition } from "src/interactions/types";
 import { interactionsState } from "src/interactions/state";
+import { interactionsOnAny } from "src/interactions";
 import { UiButton } from "src/ui/Button";
 import styles from "src/test/components/Interactions.module.css";
 
-interface DemoAction {
-  def: InteractionsActionDefinition;
+interface ActionItem {
+  definition: InteractionsDefinition;
   label: string;
   hint: string;
 }
 
-const DEMO_ACTIONS: readonly DemoAction[] = [
+const ACTION_ITEMS: readonly ActionItem[] = [
   {
     label: "Click",
     hint: "key C / left click",
-    def: {
-      id: "demo.click",
+    definition: {
+      actionId: "demo.click",
       bindings: [
         {
           kind: "key",
@@ -31,28 +31,11 @@ const DEMO_ACTIONS: readonly DemoAction[] = [
     },
   },
   {
-    label: "Double-click",
-    hint: "key D / left click",
-    def: {
-      id: "demo.double",
-      bindings: [
-        {
-          kind: "key",
-          code: "KeyD",
-        },
-        {
-          kind: "pointer",
-          button: 0,
-        },
-      ],
-    },
-  },
-  {
     label: "Hold (1.5s)",
     hint: "key H / left click",
-    def: {
-      id: "demo.hold",
-      holdThreshold: 1.5,
+    definition: {
+      actionId: "demo.hold",
+      holdTime: 1.5,
       bindings: [
         {
           kind: "key",
@@ -68,8 +51,8 @@ const DEMO_ACTIONS: readonly DemoAction[] = [
   {
     label: "Shift + S",
     hint: "key S with Shift",
-    def: {
-      id: "demo.shift",
+    definition: {
+      actionId: "demo.shift",
       bindings: [
         {
           kind: "key",
@@ -84,8 +67,8 @@ const DEMO_ACTIONS: readonly DemoAction[] = [
   {
     label: "Multi (Space + click)",
     hint: "Space and/or left click",
-    def: {
-      id: "demo.multi",
+    definition: {
+      actionId: "demo.multi",
       bindings: [
         {
           kind: "key",
@@ -106,10 +89,7 @@ export function TestInteractions() {
   const [log, setLog] = createSignal<readonly string[]>([]);
 
   onMount(() => {
-    for (const action of DEMO_ACTIONS) {
-      interactionsDefineAction(action.def);
-    }
-    const off = interactionsOn((event) => {
+    const off = interactionsOnAny((event) => {
       if (event.type === "holdprogress") {
         return;
       }
@@ -117,9 +97,6 @@ export function TestInteractions() {
     });
     onCleanup(() => {
       off();
-      for (const action of DEMO_ACTIONS) {
-        interactionsRemoveAction(action.def.id);
-      }
     });
   });
 
@@ -134,14 +111,12 @@ export function TestInteractions() {
         </span>
       </div>
       <div class="demo-grid">
-        <For each={DEMO_ACTIONS}>
+        <For each={ACTION_ITEMS}>
           {(action) => (
             <UiButton
               class={styles["demo-action"]}
-              actionId={action.def.id}
-              bindings={action.def.bindings}
-              holdTime={action.def.holdThreshold}
               label={action.label}
+              definition={action.definition}
             />
           )}
         </For>

@@ -1,9 +1,9 @@
 import type { JSX } from "solid-js";
-import { mergeProps, splitProps, Show } from "solid-js";
+import { mergeProps, splitProps, onCleanup, onMount, Show } from "solid-js";
 import { clsx } from "clsx";
 
-import type { InteractionsActionId, InteractionsBinding } from "src/interactions/types";
-import { interactionsActionHandlers, interactionsView } from "src/interactions";
+import type { InteractionsBinding, InteractionsDefinition } from "src/interactions/types";
+import { interactionsDefine, interactionsGetHandlers, interactionsGetState, interactionsRemove } from "src/interactions";
 import styles from "src/ui/Button.module.css";
 
 const KEY_CODE_LABELS: Record<string, string> = {
@@ -24,54 +24,60 @@ const UI_BUTTON_DEFAULTS: Pick<UiButtonProps, "type" | "size"> = {
 export type UiButtonSize = "long" | "small";
 
 export interface UiButtonProps extends JSX.ButtonHTMLAttributes<HTMLButtonElement> {
-  actionId: InteractionsActionId;
-  bindings?: readonly InteractionsBinding[];
-  holdTime?: undefined | number;
-  label?: string;
   size?: UiButtonSize;
+  label?: string;
+  definition: InteractionsDefinition;
 }
 
 export function UiButton(props: UiButtonProps) {
   const merged = mergeProps(UI_BUTTON_DEFAULTS, props);
   const [local, rest] = splitProps(merged, [
-    "actionId",
-    "bindings",
-    "holdTime",
-    "label",
-    "size",
     "class",
     "disabled",
+    "size",
+    "label",
+    "definition",
     "onContextMenu",
   ]);
-  const handlers = interactionsActionHandlers(local.actionId);
+  const { disabled, size, label, definition } = local;
+  const { actionId, bindings, holdTime } = definition;
+  const handlers = interactionsGetHandlers(actionId);
 
   const view = () => {
-    return interactionsView(local.actionId);
+    return interactionsGetState(actionId);
   };
 
   const keyCap = () => {
-    return keyCapOf(local.bindings);
+    return keyCapOf(bindings);
   };
 
   const holdable = () => {
-    return local.holdTime !== undefined;
+    return holdTime !== undefined;
   };
 
   const isDown = () => {
-    return view().pressed && local.disabled !== true;
+    return view().pressed && disabled !== true;
   };
 
   const progressAngle = () => {
-    return view().holdProgress * 360;
+    return view().holdingProgress * 360;
   };
+
+  onMount(() => {
+    interactionsDefine(definition);
+
+    onCleanup(() => {
+      interactionsRemove(actionId);
+    });
+  });
 
   return (
     <button
       {...rest}
-      {...(handlers ?? {})}
+      {...handlers}
       class={clsx(styles["ui-action-button"], local.class)}
-      disabled={local.disabled}
-      aria-disabled={local.disabled === true ? "true" : undefined}
+      disabled={disabled}
+      aria-disabled={disabled === true ? "true" : undefined}
       data-input-key={keyCap()?.code}
       data-down={isDown() ? "" : undefined}
       onContextMenu={(event) => {
@@ -79,21 +85,21 @@ export function UiButton(props: UiButtonProps) {
       }}
     >
       <span class={styles["ui-action-button--row"]}>
-        <Show when={local.label !== undefined}>
+        <Show when={label !== undefined}>
           <span class={styles["ui-action-button--label"]}>
-            {local.label}
+            {label}
           </span>
         </Show>
         <span class={clsx(
           styles["ui-action-button--key"],
-          local.size === "small"
+          size === "small"
             ? styles["ui-action-button--key-small"]
             : styles["ui-action-button--key-long"],
         )}>
           <span
             class={styles["ui-action-button--key-bg"]}
             style={{
-              "background-image": `url("${getKbImage(local.size)}")`,
+              "background-image": `url("${getKbImage(size)}")`,
             }}
           />
           <Show when={keyCap()}>
@@ -103,7 +109,7 @@ export function UiButton(props: UiButtonProps) {
               </span>
             )}
           </Show>
-          <Show when={holdable() && local.disabled !== true && !isDown()}>
+          <Show when={holdable() && disabled !== true && !isDown()}>
             <span
               class={styles["ui-action-button--hold-preview"]}
               style={{
@@ -111,7 +117,7 @@ export function UiButton(props: UiButtonProps) {
               }}
             />
           </Show>
-          <Show when={holdable() && local.disabled !== true && isDown()}>
+          <Show when={holdable() && disabled !== true && isDown()}>
             <span
               class={styles["ui-action-button--hold-track"]}
               style={{

@@ -1,22 +1,16 @@
-import type { InteractionsDevice, InteractionsSourceId } from "src/interactions/types";
-
-export interface InteractionsGamepadDeps {
-  activate: (source: InteractionsSourceId, device: InteractionsDevice, now: number) => void;
-  deactivate: (source: InteractionsSourceId, device: InteractionsDevice, now: number, synthetic: boolean) => void;
-}
-
-// const DEVICE: InteractionsDevice = "gamepad";
+import type { InteractionsDispatch } from "src/interactions/types";
 
 /**
  * Gamepad source stub
  *
- * When implemented, `interactionsGamepadPoll` runs once per frame from `interactionsUpdate(delta, elapsed)`:
+ * Should run once per frame from `interactionsUpdate(delta, elapsed)`:
  * - read `navigator.getGamepads()`
- * - for each connected pad `i`, diff its `buttons[b].pressed` against the previous frame
- * - on a 0->1 edge call `deps.activate("pad:" + i + ":" + b, "gamepad", now)`
- * - on a 1->0 edge call `deps.deactivate(...)`
- * - axes-as-buttons (e.g. stick past a deadzone) map to the same source-id scheme, e.g. `"pad:0:axis:1+"`
+ * - for each connected pad, diff `buttons[b].pressed` against previous frame
+ * - on 0->1 edge, dispatch press for actions bound to that pad button
+ * - on 1->0 edge, dispatch matching release
+ *
+ * Would require gamepad binding kind + pad-aware dispatch methods on `InteractionsDispatch`
  */
-export function interactionsGamepadPoll(_elapsed: number, _deps: InteractionsGamepadDeps): void {
+export function interactionsGamepadPoll(_elapsed: number, _dispatch: InteractionsDispatch): void {
   // TBD
 }

@@ -1,50 +1,24 @@
-import type { InteractionsDevice, InteractionsModifierSpec, InteractionsSourceId } from "src/interactions/types";
-
-export interface InteractionsKeyboardCandidate {
-  sourceId: InteractionsSourceId;
-  modifiers?: InteractionsModifierSpec;
-}
-
-export interface InteractionsKeyboardDeps {
-  lookupCode: (code: string) => readonly InteractionsKeyboardCandidate[];
-  allKeySources: () => readonly InteractionsSourceId[];
-  now: () => number;
-  activate: (source: InteractionsSourceId, device: InteractionsDevice, now: number) => void;
-  deactivate: (source: InteractionsSourceId, device: InteractionsDevice, now: number, synthetic: boolean) => void;
-}
+import type { InteractionsDispatch, InteractionsKeyModifiers, InteractionsKeyModifiersState } from "src/interactions/types";
 
 export interface InteractionsKeyboardListeners {
   attach: () => void;
   detach: () => void;
 }
 
-const DEVICE: InteractionsDevice = "keyboardMouse";
-
-export function interactionsKeyboardCreate(deps: InteractionsKeyboardDeps): InteractionsKeyboardListeners {
+export function interactionsKeyboardListen(dispatch: InteractionsDispatch): InteractionsKeyboardListeners {
   const onKeyDown = (event: KeyboardEvent): void => {
     if (event.repeat) {
       return;
     }
-    const now = deps.now();
-    for (const candidate of deps.lookupCode(event.code)) {
-      if (interactionsKeyboardMatchModifiers(candidate.modifiers, event)) {
-        deps.activate(candidate.sourceId, DEVICE, now);
-      }
-    }
+    dispatch.pressKey(event.code, interactionsKeyboardModifierState(event), dispatch.now());
   };
 
   const onKeyUp = (event: KeyboardEvent): void => {
-    const now = deps.now();
-    for (const candidate of deps.lookupCode(event.code)) {
-      deps.deactivate(candidate.sourceId, DEVICE, now, false);
-    }
+    dispatch.releaseKey(event.code, dispatch.now());
   };
 
   const onBlur = (): void => {
-    const now = deps.now();
-    for (const source of deps.allKeySources()) {
-      deps.deactivate(source, DEVICE, now, true);
-    }
+    dispatch.releaseAllKeys(dispatch.now());
   };
 
   return {
@@ -61,6 +35,18 @@ export function interactionsKeyboardCreate(deps: InteractionsKeyboardDeps): Inte
   };
 }
 
-export function interactionsKeyboardMatchModifiers(spec: undefined | InteractionsModifierSpec, event: KeyboardEvent,): boolean {
-  return (spec?.shift === true) === event.shiftKey && (spec?.ctrl === true) === event.ctrlKey && (spec?.alt === true) === event.altKey && (spec?.meta === true) === event.metaKey;
+export function interactionsKeyboardModifiersMatch(modifiers: undefined | InteractionsKeyModifiers, modifiersState: InteractionsKeyModifiersState): boolean {
+  return (modifiers?.shift ?? false) === modifiersState.shift
+    && (modifiers?.ctrl ?? false) === modifiersState.ctrl
+    && (modifiers?.alt ?? false) === modifiersState.alt
+    && (modifiers?.meta ?? false) === modifiersState.meta;
+}
+
+function interactionsKeyboardModifierState(event: KeyboardEvent): InteractionsKeyModifiersState {
+  return {
+    shift: event.shiftKey,
+    ctrl: event.ctrlKey,
+    alt: event.altKey,
+    meta: event.metaKey,
+  };
 }
