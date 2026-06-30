@@ -1,0 +1,41 @@
+.sound-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sound-group-title {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text);
+}
+
+.sound-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 8px;
+}
+
+.sound-button {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: left;
+  color: var(--accent);
+  background: var(--accent-bg);
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.sound-button-count {
+  font-family: var(--mono), monospace;
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--text);
+}

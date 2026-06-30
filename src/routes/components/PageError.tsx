@@ -1,3 +1,4 @@
+import { createEffect } from "solid-js";
 import styles from "src/routes/components/PageError.module.css";
 
 export interface RoutesPageErrorProps {
@@ -7,6 +8,10 @@ export interface RoutesPageErrorProps {
 }
 
 export function RoutesPageError(props: RoutesPageErrorProps) {
+  createEffect(() => {
+    console.error(props.error);
+  });
+
   return (
     <div
       class={styles["route-error"]}

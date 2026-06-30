@@ -1,9 +1,10 @@
+import { clsx } from "clsx";
 import { createSignal, onCleanup, onMount, For } from "solid-js";
 
 import type { InteractionEvent, InteractionsDefinition } from "src/interactions/types";
+import { noop } from "src/utils/noop";
 import { interactionsState } from "src/interactions/state";
-import { interactionsOnAny } from "src/interactions";
-import { UiButton } from "src/ui/Button";
+import { interactionsOnAny, interactionsDefine, interactionsRemove, interactionsGetHandlers, interactionsGetState } from "src/interactions";
 import styles from "src/test/components/Interactions.module.css";
 
 interface ActionItem {
@@ -89,6 +90,9 @@ export function TestInteractions() {
   const [log, setLog] = createSignal<readonly string[]>([]);
 
   onMount(() => {
+    for (const item of ACTION_ITEMS) {
+      interactionsDefine(item.definition);
+    }
     const off = interactionsOnAny((event) => {
       if (event.type === "holdprogress") {
         return;
@@ -97,6 +101,9 @@ export function TestInteractions() {
     });
     onCleanup(() => {
       off();
+      for (const item of ACTION_ITEMS) {
+        interactionsRemove(item.definition.actionId);
+      }
     });
   });
 
@@ -112,13 +119,36 @@ export function TestInteractions() {
       </div>
       <div class="demo-grid">
         <For each={ACTION_ITEMS}>
-          {(action) => (
-            <UiButton
-              class={styles["demo-action"]}
-              label={action.label}
-              definition={action.definition}
-            />
-          )}
+          {(action) => {
+            const view = () => interactionsGetState(action.definition.actionId);
+            return (
+              <button
+                {...interactionsGetHandlers(action.definition.actionId)}
+                class={clsx(
+                  styles["demo-action"],
+                  view().pressed && styles["pressed"],
+                  view().holding && styles["holding"],
+                )}
+                type="button"
+                onClick={noop}
+              >
+                <span class={styles["demo-action-label"]}>
+                  {action.label}
+                </span>
+                <span class={styles["demo-action-hint"]}>
+                  {action.hint}
+                </span>
+                <span class={styles["demo-meter"]}>
+                  <span
+                    class={styles["demo-bar"]}
+                    style={{
+                      width: `${Math.round(view().holdingProgress * 100)}%`,
+                    }}
+                  />
+                </span>
+              </button>
+            );
+          }}
         </For>
       </div>
       <ol class={styles["demo-log"]}>

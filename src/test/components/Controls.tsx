@@ -1,12 +1,6 @@
 import { loopSetTargetFps } from "src/loop";
-import { audioSetMuted, audioSetVolume, audioSfxPlay, audioUiPlay } from "src/audio";
-import { audioState } from "src/audio/state";
 import { testState, testStateSet } from "src/test/helpers/state";
 import styles from "src/test/components/Controls.module.css";
-
-const DICE_RATE_MIN = 0.9;
-
-const DICE_RATE_SPREAD = 0.2;
 
 export function TestControls() {
   return (
@@ -110,69 +104,6 @@ export function TestControls() {
           </dd>
         </div>
       </dl>
-      <div class={styles["control-section"]}>
-        <span class={styles["control-section-title"]}>
-          Audio
-        </span>
-        <label class={styles.control}>
-          <span class="control-label">
-            Master volume
-            <output class={styles["control-value"]}>
-              {Math.round(audioState.master * 100)}%
-            </output>
-          </span>
-          <input
-            type="range"
-            min="0"
-            max="1"
-            step="0.01"
-            value={audioState.master}
-            onInput={(event) => audioSetVolume("master", event.currentTarget.valueAsNumber)}
-          />
-        </label>
-        <label class={styles.control}>
-          <span class="control-label">
-            SFX volume
-            <output class={styles["control-value"]}>
-              {Math.round(audioState.sfx * 100)}%
-            </output>
-          </span>
-          <input
-            type="range"
-            min="0"
-            max="1"
-            step="0.01"
-            value={audioState.sfx}
-            onInput={(event) => audioSetVolume("sfx", event.currentTarget.valueAsNumber)}
-          />
-        </label>
-        <label class={`${styles.control} ${styles["control-row"]}`}>
-          <span class="control-label">
-            Mute
-          </span>
-          <input
-            type="checkbox"
-            checked={audioState.muted}
-            onChange={(event) => audioSetMuted(event.currentTarget.checked)}
-          />
-        </label>
-        <div class="demo-grid">
-          <button
-            type="button"
-            class="control-button"
-            onClick={() => audioUiPlay("ui_click")}
-          >
-            UI click
-          </button>
-          <button
-            type="button"
-            class="control-button"
-            onClick={() => audioSfxPlay("dice_hit", { rate: DICE_RATE_MIN + Math.random() * DICE_RATE_SPREAD })}
-          >
-            Dice hit
-          </button>
-        </div>
-      </div>
     </aside>
   );
 }

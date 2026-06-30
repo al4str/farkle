@@ -11,11 +11,13 @@ export interface InteractionsState {
 export interface InteractionsDefinition {
   actionId: InteractionsActionId;
   bindings: readonly InteractionsBinding[];
-  holdTime?: number;
-  clickWindow?: number;
+  holdTime?: undefined | number;
+  clickWindow?: undefined | number;
 }
 
-export type InteractionsDefinitionResolved = Required<InteractionsDefinition>;
+export type InteractionsDefinitionResolved = {
+  [Key in keyof InteractionsDefinition]-?: Exclude<InteractionsDefinition[Key], undefined>;
+};
 
 export interface InteractionsKeyModifiers {
   shift?: boolean;

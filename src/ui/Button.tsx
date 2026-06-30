@@ -1,58 +1,60 @@
 import type { JSX } from "solid-js";
-import { mergeProps, splitProps, onCleanup, onMount, Show } from "solid-js";
+import { splitProps, onCleanup, onMount, Show } from "solid-js";
 import { clsx } from "clsx";
 
-import type { InteractionsBinding, InteractionsDefinition } from "src/interactions/types";
-import { interactionsDefine, interactionsGetHandlers, interactionsGetState, interactionsRemove } from "src/interactions";
+import type { InteractionsDefinition } from "src/interactions/types";
+import type { InteractionsKeyCode } from "src/interactions/keys";
+import { interactionsDefine, interactionsGetHandlers, interactionsGetState, interactionsOn, interactionsRemove } from "src/interactions";
+import { interactionsKeyLabel } from "src/interactions/keys";
 import styles from "src/ui/Button.module.css";
 
-const KEY_CODE_LABELS: Record<string, string> = {
-  Space: "Space",
-  Enter: "Enter",
-  Escape: "Esc",
-  ArrowUp: "↑",
-  ArrowDown: "↓",
-  ArrowLeft: "←",
-  ArrowRight: "→",
-};
+const HOLD_TIME_SEC = 1;
 
-const UI_BUTTON_DEFAULTS: Pick<UiButtonProps, "type" | "size"> = {
-  type: "button",
-  size: "long",
-};
+type Size = "long" | "small";
 
-export type UiButtonSize = "long" | "small";
+type ButtonProps = JSX.ButtonHTMLAttributes<HTMLButtonElement>;
 
-export interface UiButtonProps extends JSX.ButtonHTMLAttributes<HTMLButtonElement> {
-  size?: UiButtonSize;
-  label?: string;
-  definition: InteractionsDefinition;
+type SafeButtonProps = Omit<ButtonProps, "onClick" | "onContextMenu" | "children">;
+
+export interface UiButtonProps extends SafeButtonProps {
+  label: string;
+  holdable?: boolean;
+  actionId: InteractionsDefinition["actionId"];
+  code: InteractionsKeyCode;
+  onClick: () => void;
 }
 
 export function UiButton(props: UiButtonProps) {
-  const merged = mergeProps(UI_BUTTON_DEFAULTS, props);
-  const [local, rest] = splitProps(merged, [
+  const [local, rest] = splitProps(props, [
     "class",
     "disabled",
-    "size",
+    "holdable",
     "label",
-    "definition",
-    "onContextMenu",
+    "actionId",
+    "code",
+    "onClick",
   ]);
-  const { disabled, size, label, definition } = local;
-  const { actionId, bindings, holdTime } = definition;
+  const { disabled, holdable, label, actionId, code, onClick } = local;
+  const keyLabel = interactionsKeyLabel(code);
+  const size: Size = keyLabel.length > 1 ? "long" : "small";
+  const definition: InteractionsDefinition = {
+    actionId,
+    bindings: [
+      {
+        kind: "pointer",
+        button: 0,
+      },
+      {
+        kind: "key",
+        code,
+      },
+    ],
+    holdTime: holdable ? HOLD_TIME_SEC : undefined,
+  };
   const handlers = interactionsGetHandlers(actionId);
 
   const view = () => {
     return interactionsGetState(actionId);
-  };
-
-  const keyCap = () => {
-    return keyCapOf(bindings);
-  };
-
-  const holdable = () => {
-    return holdTime !== undefined;
   };
 
   const isDown = () => {
@@ -65,8 +67,15 @@ export function UiButton(props: UiButtonProps) {
 
   onMount(() => {
     interactionsDefine(definition);
+    const trigger = holdable ? "hold" : "click";
+    const off = interactionsOn(actionId, (event) => {
+      if (event.type === trigger) {
+        onClick();
+      }
+    });
 
     onCleanup(() => {
+      off();
       interactionsRemove(actionId);
     });
   });
@@ -77,8 +86,9 @@ export function UiButton(props: UiButtonProps) {
       {...handlers}
       class={clsx(styles["ui-action-button"], local.class)}
       disabled={disabled}
+      type="button"
       aria-disabled={disabled === true ? "true" : undefined}
-      data-input-key={keyCap()?.code}
+      data-input-key={code}
       data-down={isDown() ? "" : undefined}
       onContextMenu={(event) => {
         event.preventDefault();
@@ -102,14 +112,10 @@ export function UiButton(props: UiButtonProps) {
               "background-image": `url("${getKbImage(size)}")`,
             }}
           />
-          <Show when={keyCap()}>
-            {(cap) => (
-              <span class={styles["ui-action-button--key-label"]}>
-                {cap().label}
-              </span>
-            )}
-          </Show>
-          <Show when={holdable() && disabled !== true && !isDown()}>
+          <span class={styles["ui-action-button--key-label"]}>
+            {keyLabel}
+          </span>
+          <Show when={holdable && disabled !== true && !isDown()}>
             <span
               class={styles["ui-action-button--hold-preview"]}
               style={{
@@ -117,7 +123,7 @@ export function UiButton(props: UiButtonProps) {
               }}
             />
           </Show>
-          <Show when={holdable() && disabled !== true && isDown()}>
+          <Show when={holdable && disabled !== true && isDown()}>
             <span
               class={styles["ui-action-button--hold-track"]}
               style={{
@@ -141,36 +147,7 @@ export function UiButton(props: UiButtonProps) {
   );
 }
 
-function keyCapOf(bindings: undefined | readonly InteractionsBinding[]): undefined | { code: string; label: string } {
-  if (bindings === undefined) {
-    return undefined;
-  }
-  for (const binding of bindings) {
-    if (binding.kind === "key") {
-      return {
-        code: binding.code,
-        label: humanizeKeyCode(binding.code),
-      };
-    }
-  }
-  return undefined;
-}
-
-function humanizeKeyCode(code: string): string {
-  const known = KEY_CODE_LABELS[code];
-  if (known !== undefined) {
-    return known;
-  }
-  if (code.startsWith("Key")) {
-    return code.slice(3);
-  }
-  if (code.startsWith("Digit")) {
-    return code.slice(5);
-  }
-  return code;
-}
-
-function getKbImage(size: undefined | UiButtonSize): string {
+function getKbImage(size: undefined | Size): string {
   if (size === "small") {
     return "/assets/images/ui/kb_small.webp";
   }

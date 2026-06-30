@@ -10,6 +10,7 @@ import { interactionsKeyboardListen, interactionsKeyboardModifiersMatch } from "
 import { interactionsPointerHandlers } from "src/interactions/sources/pointer";
 import { interactionsGamepadPoll } from "src/interactions/sources/gamepad";
 import { interactionsState, interactionsStateSet } from "src/interactions/state";
+import { noop } from "src/utils/noop";
 
 const RECOGNIZERS_DEFAULTS: InteractionsRecognizerDefaults = {
   holdTime: 0.5,
@@ -99,10 +100,10 @@ export function interactionsRemove(actionId: InteractionsActionId): void {
   }));
 }
 
-export function interactionsOn(actionId: InteractionsActionId, handler: InteractionEventHandler): () => void {
+export function interactionsOn(actionId: InteractionsActionId, handler: undefined | null | InteractionEventHandler): () => void {
   const subscription: Subscription = {
     actionId: actionId,
-    fn: handler,
+    fn: typeof handler === "function" ? handler : noop,
   };
   STATE.subscriptions.add(subscription);
 
