@@ -1,9 +1,7 @@
-import { GameDiceOverlay } from "src/game/components/DiceOverlay";
-
 export function GamePage() {
   return (
-    <section class="">
-      <GameDiceOverlay />
+    <section>
+      TBD
     </section>
   );
 }

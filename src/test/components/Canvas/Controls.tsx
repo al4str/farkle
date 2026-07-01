@@ -1,6 +1,6 @@
 import { loopSetTargetFps } from "src/loop";
 import { testState, testStateSet } from "src/test/helpers/state";
-import styles from "src/test/components/Controls.module.css";
+import styles from "src/test/components/Canvas/Controls.module.css";
 
 export function TestControls() {
   return (

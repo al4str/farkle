@@ -1,5 +1,5 @@
 import { createEffect } from "solid-js";
-import styles from "src/routes/components/PageError.module.css";
+import styles from "src/routes/components/PageError/styles.module.css";
 
 export interface RoutesPageErrorProps {
   error: unknown;

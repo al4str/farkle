@@ -38,8 +38,6 @@ function usePlayerContextData(): PlayerContextData {
   return { id: "" };
 }
 
-const clientActionsFinishPlayer = (): void => {};
-
 const clientRenderConfettiFire = (_side: "left" | "right"): void => {};
 
 // How long the confetti keeps bursting after a victory.
@@ -52,11 +50,13 @@ const IMAGES = [
   "/assets/images/ui/mantling_main.webp",
 ] as const;
 
-export interface GameVictoryOverlayProps {
+interface Props {
   class?: string;
+  open?: undefined | boolean;
+  onClose?: undefined | (() => void);
 }
 
-export function GameVictoryOverlay(props: GameVictoryOverlayProps) {
+export function GameVictoryOverlay(props: Props) {
   const [image] = createSignal(IMAGES[randomize(0, IMAGES.length - 1)]);
   const currentPlayer = usePlayerContextData();
   const game = useClientStateByKey("game");
@@ -98,11 +98,15 @@ export function GameVictoryOverlay(props: GameVictoryOverlayProps) {
   return (
     <UiEventOverlay
       class={props.class}
+      open={props.open}
+      onClose={props.onClose}
       action={{
         label: i18nTranslate("common.action.close"),
         actionId: "game.victory.close",
         code: "Escape",
-        onClick: clientActionsFinishPlayer,
+        onClick: () => {
+          props.onClose?.();
+        },
       }}
     >
       <span class={styles.figure}>

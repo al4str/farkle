@@ -1,0 +1,33 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: 100vw;
+  max-height: 100dvh;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+  overflow: hidden;
+  opacity: 0;
+  transition:
+    opacity 0.15s linear,
+    overlay 0.15s ease allow-discrete,
+    display 0.15s ease allow-discrete;
+}
+
+.overlay[open] {
+  opacity: 1;
+}
+
+@starting-style {
+  .overlay[open] {
+    opacity: 0;
+  }
+}
+
+.overlay::backdrop {
+  background: transparent;
+}

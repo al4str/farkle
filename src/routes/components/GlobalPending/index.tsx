@@ -1,7 +1,7 @@
 import { Show } from "solid-js";
 import { useIsRouting } from "@solidjs/router";
 
-import styles from "src/routes/components/GlobalPending.module.css";
+import styles from "src/routes/components/GlobalPending/styles.module.css";
 
 export function RoutesGlobalPending() {
   const isRouting = useIsRouting();

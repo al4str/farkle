@@ -2,8 +2,8 @@ import type { Vector3 } from "three/webgpu";
 import { createSignal, onMount, For, Show, onCleanup } from "solid-js";
 import { createStore } from "solid-js/store";
 import { clsx } from "clsx";
-
 import type { DiceItem, DiceMetaData, DiceName } from "src/dice/data";
+
 import type { Placement } from "src/utils/placeIntoRadius";
 import type { InteractionsKeyCode } from "src/interactions/keys";
 import type { SpatialNavigatorDirection } from "src/utils/spatialNavigator";
@@ -18,6 +18,7 @@ import { gameRngMulberry32 } from "src/game/helpers/rng";
 import { gameSeedManagerGenerateMaster } from "src/game/helpers/seedManager";
 import { placeIntoRadius } from "src/utils/placeIntoRadius";
 import { spatialNavigatorCreate } from "src/utils/spatialNavigator";
+import { GamePlayersScore } from "src/game/components/PlayersScore";
 import styles from "src/game/components/DiceOverlay/styles.module.css";
 
 const DICE_NAMES = [
@@ -189,6 +190,33 @@ export function GameDiceOverlay() {
 
   return (
     <div class={styles.screen}>
+      <div class={styles.score}>
+        <GamePlayersScore
+          goalScore={3000}
+          currentPlayerId="player"
+          turnPlayerId="player"
+          players={{
+            ["player"]: {
+              id: "player",
+              name: "Henry",
+              ready: true,
+              finished: false,
+              totalScore: 2300,
+              turnScore: 200,
+              selectedScore: 50,
+            },
+            ["opponent"]: {
+              id: "opponent",
+              name: "Opponent",
+              ready: true,
+              finished: false,
+              totalScore: 2500,
+              turnScore: 0,
+              selectedScore: 0,
+            },
+          }}
+        />
+      </div>
       <div class={styles.panel}>
         <UiButton
           label="Help"

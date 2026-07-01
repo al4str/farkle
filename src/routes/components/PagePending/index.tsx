@@ -1,4 +1,4 @@
-import styles from "src/routes/components/PagePending.module.css";
+import styles from "src/routes/components/PagePending/styles.module.css";
 
 export interface RoutesPagePendingProps {
   label?: string;

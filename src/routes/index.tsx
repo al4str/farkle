@@ -15,11 +15,11 @@ export const ROUTES_DEFINITION: RouteDefinition[] = [
   },
   {
     path: "/test/canvas",
-    component: lazy(() => import("src/test/components/PageIndex")),
+    component: lazy(() => import("src/test/components/PageCanvas")),
   },
   {
-    path: "/test/interactions",
-    component: lazy(() => import("src/test/components/PageInteractions")),
+    path: "/test/kitchen-sink",
+    component: lazy(() => import("src/test/components/PageKitchenSink")),
   },
   {
     path: "/lobby",

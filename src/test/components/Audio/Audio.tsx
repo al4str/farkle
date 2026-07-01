@@ -5,8 +5,8 @@ import type { AudioSoundId } from "src/audio/catalog";
 import { audioCatalogGet, audioCatalogIds } from "src/audio/catalog";
 import { audioPlay, audioSetMuted, audioSetVolume } from "src/audio";
 import { audioState } from "src/audio/state";
-import controls from "src/test/components/Controls.module.css";
-import styles from "src/test/components/Audio.module.css";
+import controls from "src/test/components/Canvas/Controls.module.css";
+import styles from "src/test/components/Audio/Audio.module.css";
 
 interface VolumeKnob {
   id: "master" | AudioBus;

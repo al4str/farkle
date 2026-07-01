@@ -1,6 +1,6 @@
 import { A } from "@solidjs/router";
 
-import styles from "src/routes/components/NavBar.module.css";
+import styles from "src/routes/components/NavBar/styles.module.css";
 
 export function RoutesNavBar() {
   return (
@@ -15,23 +15,23 @@ export function RoutesNavBar() {
       <A
         class={styles["nav-link"]}
         activeClass={styles["is-active"]}
-        href="/test/interactions"
+        href="/test/kitchen-sink"
       >
-        Interactions
+        Kitchen Sink
       </A>
       <A
         class={styles["nav-link"]}
         activeClass={styles["is-active"]}
         href="/lobby"
       >
-        Lobby
+        Game screen
       </A>
       <A
         class={styles["nav-link"]}
         activeClass={styles["is-active"]}
         href="/stats"
       >
-        Stats
+        Data loading
       </A>
     </nav>
   );

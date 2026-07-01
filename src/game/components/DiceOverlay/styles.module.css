@@ -7,14 +7,20 @@
   pointer-events: none;
 }
 
+.score {
+  position: absolute;
+  bottom: 72px;
+  left: 48px;
+  pointer-events: auto;
+}
+
 .panel {
   position: absolute;
-  bottom: 24px;
-  right: 24px;
+  bottom: 72px;
+  right: 48px;
   display: flex;
   flex-direction: column;
   align-items: end;
-  padding: 24px;
   pointer-events: auto;
 }
 

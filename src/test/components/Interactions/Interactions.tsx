@@ -5,7 +5,7 @@ import type { InteractionEvent, InteractionsDefinition } from "src/interactions/
 import { noop } from "src/utils/noop";
 import { interactionsState } from "src/interactions/state";
 import { interactionsOnAny, interactionsDefine, interactionsRemove, interactionsGetHandlers, interactionsGetState } from "src/interactions";
-import styles from "src/test/components/Interactions.module.css";
+import styles from "src/test/components/Interactions/Interactions.module.css";
 
 interface ActionItem {
   definition: InteractionsDefinition;

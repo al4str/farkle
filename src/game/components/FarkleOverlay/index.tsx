@@ -6,10 +6,6 @@ import { UiTitle } from "src/ui/Title";
 import { UiEventOverlay } from "src/ui/EventOverlay";
 import styles from "src/game/components/FarkleOverlay/styles.module.css";
 
-// --- Stubs: replace with real wiring ---
-const clientActionsPassTurn = (): void => {};
-// --- End stubs ---
-
 const IMAGES = [
   "/assets/images/icons/unsatisfaction.webp",
   "/assets/images/icons/fool.webp",
@@ -19,23 +15,32 @@ const IMAGES = [
   "/assets/images/icons/defence.webp",
 ] as const;
 
-export interface GameFarkleOverlayProps {
+interface Props {
   class?: string;
+  open?: undefined | boolean;
   myTurn: boolean;
+  onClose?: undefined | (() => void);
 }
 
-export function GameFarkleOverlay(props: GameFarkleOverlayProps) {
+export function GameFarkleOverlay(props: Props) {
   const [image] = createSignal(IMAGES[randomize(0, IMAGES.length - 1)]);
 
   return (
     <UiEventOverlay
       class={props.class}
-      action={props.myTurn ? {
-        label: i18nTranslate("common.action.continue"),
-        actionId: "game.farkle.continue",
-        code: "KeyF",
-        onClick: clientActionsPassTurn,
-      } : null}
+      open={props.open}
+      onClose={props.onClose}
+      action={props.myTurn
+        ? {
+          label: i18nTranslate("common.action.continue"),
+          actionId: "game.farkle.continue",
+          code: "Escape",
+          onClick: () => {
+            props.onClose?.();
+          },
+        }
+        : null
+      }
     >
       <span
         class={styles.image}

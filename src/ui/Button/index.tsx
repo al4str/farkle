@@ -1,5 +1,5 @@
 import type { JSX } from "solid-js";
-import { splitProps, onCleanup, onMount, Show } from "solid-js";
+import { splitProps, onCleanup, createEffect, Show } from "solid-js";
 import { clsx } from "clsx";
 
 import type { InteractionsDefinition, InteractionsListeners } from "src/interactions/types";
@@ -65,7 +65,10 @@ export function UiButton(props: UiButtonProps) {
     return getInteractionsState().pressed && local.disabled !== true;
   };
 
-  onMount(() => {
+  createEffect(() => {
+    if (local.disabled === true) {
+      return;
+    }
     const listeners: InteractionsListeners = {
       press: () => {
         audioUiPlay("cling_mid", { rate: 0.90 + Math.random() * 0.1 });

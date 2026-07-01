@@ -11,7 +11,7 @@ export function RoutesPageNotFound() {
       </p>
       <A
         class="control-button"
-        href="/public"
+        href="/"
       >
         Back to test page
       </A>

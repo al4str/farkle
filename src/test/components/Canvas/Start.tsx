@@ -1,6 +1,6 @@
 import { audioUnlock } from "src/audio";
 import { testStateSet } from "src/test/helpers/state";
-import styles from "src/test/components/Start.module.css";
+import styles from "src/test/components/Canvas/Start.module.css";
 
 export function TestStart() {
   return (

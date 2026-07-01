@@ -2,7 +2,7 @@ import { createSignal } from "solid-js";
 
 import { GamePlayersScore } from "src/game/components/PlayersScore";
 
-import styles from "src/test/components/Controls.module.css";
+import styles from "src/test/components/Canvas/Controls.module.css";
 
 const PLAYER_ID = "player";
 

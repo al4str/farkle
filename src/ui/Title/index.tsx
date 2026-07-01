@@ -3,8 +3,6 @@ import { clsx } from "clsx";
 
 import styles from "src/ui/Title/styles.module.css";
 
-export type UiTitleVariant = "chalk" | "yellow" | "red";
-
 const ORNAMENTS = {
   chalk: "/assets/images/ui/title_ornament_chalk.webp",
   yellow: "/assets/images/ui/title_ornament_yellow.webp",
@@ -13,17 +11,18 @@ const ORNAMENTS = {
 
 const ORNAMENT_HEIGHT = 124;
 
-export interface UiTitleProps {
+interface Props {
   class?: string;
-  variant: UiTitleVariant;
+  variant: "chalk" | "yellow" | "red";
   children: JSX.Element;
 }
 
-export function UiTitle(props: UiTitleProps) {
-  const image = () => {
+export function UiTitle(props: Props) {
+  const getImage = () => {
     return ORNAMENTS[props.variant];
   };
-  const verticalOffset = () => {
+
+  const getOffset = () => {
     if (props.variant === "chalk") {
       return undefined;
     }
@@ -31,12 +30,15 @@ export function UiTitle(props: UiTitleProps) {
   };
 
   return (
-    <header class={clsx(styles.header, props.class)} data-variant={props.variant}>
+    <header
+      class={clsx(styles.header, props.class)}
+      data-variant={props.variant}
+    >
       <span
         class={styles.ornamentLeft}
         style={{
-          "background-image": `url("${image()}")`,
-          "transform": verticalOffset(),
+          "background-image": `url("${getImage()}")`,
+          "transform": getOffset(),
         }}
       />
       <h1 class={styles.title}>
@@ -45,8 +47,8 @@ export function UiTitle(props: UiTitleProps) {
       <span
         class={styles.ornamentRight}
         style={{
-          "background-image": `url("${image()}")`,
-          "transform": verticalOffset(),
+          "background-image": `url("${getImage()}")`,
+          "transform": getOffset(),
         }}
       />
     </header>
