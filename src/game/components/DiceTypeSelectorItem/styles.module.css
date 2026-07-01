@@ -1,0 +1,122 @@
+.item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.header {
+  clear: both;
+}
+
+.icon {
+  float: left;
+  width: 40px;
+  height: 40px;
+  margin-top: 4px;
+  margin-right: 8px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.title {
+  margin-bottom: 4px;
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.description {
+  font-size: 0.75rem;
+  color: var(--color-gray-ish);
+}
+
+.tableWrap {
+  font-size: 0.875rem;
+}
+
+.table {
+  width: 100%;
+}
+
+.headRow {
+  color: var(--color-gray-ish);
+}
+
+.headCell {
+  font-weight: 600;
+}
+
+.valueRow {
+  color: var(--color-white-ish);
+}
+
+.valueCell {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.controls {
+  display: flex;
+  align-items: stretch;
+  height: 32px;
+  font-size: 0.875rem;
+  color: var(--color-white-ish);
+}
+
+.buttonLeft,
+.buttonRight {
+  appearance: none;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: safe center;
+  padding-inline: 8px;
+  border: 1px solid #3f3f46;
+  background-color: rgba(39, 39, 42, 0.5);
+  cursor: default;
+}
+
+.buttonLeft {
+  width: 7ch;
+  border-radius: 6px 0 0 6px;
+}
+
+.buttonRight {
+  border-radius: 0 6px 6px 0;
+}
+
+.buttonLeft:not([disabled]):hover,
+.buttonRight:not([disabled]):hover {
+  border-color: #71717a;
+}
+
+.buttonLeft[data-active],
+.buttonRight[data-active] {
+  border-color: #f59e0b;
+  background-color: rgba(120, 53, 15, 0.3);
+}
+
+.buttonLeft[disabled],
+.buttonRight[disabled] {
+  color: rgba(243, 242, 222, 0.4);
+  cursor: not-allowed;
+}
+
+.count {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: safe center;
+  padding-inline: 16px;
+  border-top: 1px solid #3f3f46;
+  border-bottom: 1px solid #3f3f46;
+  color: var(--color-white-ish);
+}
+
+.count[data-active] {
+  color: var(--color-black-ish);
+  border-color: #f59e0b;
+  background-color: #f59e0b;
+}

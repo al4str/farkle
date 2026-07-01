@@ -1,0 +1,62 @@
+.section {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  padding-bottom: 32px;
+}
+
+.heading {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-style: italic;
+  letter-spacing: 0.025em;
+}
+
+.minor {
+  color: var(--color-gray-ish);
+}
+
+.thin {
+  font-weight: 100;
+}
+
+.starting {
+  color: var(--color-yellow-ish);
+}
+
+.imageRow {
+  display: flex;
+  justify-content: safe center;
+}
+
+.separator {
+  display: block;
+}
+
+.playerRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.playerStatus {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.notReadyText {
+  color: var(--color-gray-ish);
+}
+
+.actions {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: safe center;
+  gap: 16px;
+}

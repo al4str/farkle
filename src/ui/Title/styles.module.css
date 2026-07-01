@@ -1,0 +1,40 @@
+.header {
+  position: relative;
+  --title-red: #ef4444;
+  --ornament-width: 123px;
+  --ornament-height: 93px;
+}
+
+.title {
+  font-size: 3.75rem;
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: 0.025em;
+  text-shadow: var(--drop-shadow-text);
+  color: var(--color-yellow-ish);
+}
+
+.header[data-variant="red"] .title {
+  color: var(--title-red);
+}
+
+.ornamentLeft,
+.ornamentRight {
+  position: absolute;
+  top: 50%;
+  width: var(--ornament-width);
+  height: var(--ornament-height);
+  margin-top: calc(var(--ornament-height) / -2);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.ornamentLeft {
+  right: calc(100% + 16px);
+}
+
+.ornamentRight {
+  left: calc(100% + 16px);
+  scale: -1 1;
+}

@@ -1,0 +1,60 @@
+.board {
+  position: relative;
+  flex-grow: 1;
+}
+
+.spectator {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 16px;
+  padding: 16px;
+}
+
+@media (min-width: 640px) {
+  .spectator {
+    padding: 32px;
+  }
+}
+
+.spectatingLabel {
+  font-size: 0.875rem;
+  color: var(--color-yellow-ish);
+  filter: drop-shadow(var(--drop-shadow-text));
+}
+
+.actions {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  padding-right: 24px;
+  padding-bottom: 32px;
+}
+
+@media (min-width: 640px) {
+  .actions {
+    padding: 32px;
+  }
+}
+
+.playersScore {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  padding: 16px;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+@media (min-width: 640px) {
+  .playersScore {
+    padding: 32px;
+  }
+}

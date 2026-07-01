@@ -1,0 +1,18 @@
+.root {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: safe center;
+  gap: 16px;
+}
+
+.icon {
+  flex-shrink: 0;
+}
+
+.message {
+  text-align: center;
+  color: var(--color-gray-ish);
+  text-shadow: var(--drop-shadow-text);
+}

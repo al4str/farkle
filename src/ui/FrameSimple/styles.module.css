@@ -1,0 +1,28 @@
+.section {
+  position: relative;
+  isolation: isolate;
+  width: 512px;
+  height: 256px;
+}
+
+.background {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-image: url("/assets/images/ui/dialog_simple.webp");
+  filter: drop-shadow(var(--drop-shadow-frame));
+}
+
+.main {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  height: 100%;
+  padding: 64px 32px 32px;
+}

@@ -1,0 +1,56 @@
+.figure {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 140px;
+}
+
+.rays {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  transform: translate(-50%, -50%);
+}
+
+.raysSmall {
+  width: 160px;
+  height: 160px;
+  background-image: url("/assets/images/ui/rays_small.webp");
+  animation: spin 15s linear infinite;
+}
+
+.raysBig {
+  width: 256px;
+  height: 256px;
+  background-image: url("/assets/images/ui/rays_big.webp");
+  animation: spin 20s linear infinite reverse;
+}
+
+.image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.winner {
+  font-size: 2.25rem;
+  font-style: italic;
+  letter-spacing: 0.025em;
+  text-shadow: var(--drop-shadow-text);
+}
+
+@keyframes spin {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}

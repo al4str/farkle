@@ -1,0 +1,10 @@
+.image {
+  display: block;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.shadow {
+  filter: drop-shadow(var(--drop-shadow-text));
+}

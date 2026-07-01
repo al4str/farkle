@@ -1,0 +1,219 @@
+.grid {
+  display: grid;
+  grid-template-columns: 1fr auto auto auto 1fr;
+  grid-template-rows: repeat(5, auto);
+  column-gap: 4px;
+  row-gap: 0;
+  align-items: center;
+  line-height: 1.5;
+}
+
+.shrink {
+  flex-shrink: 0;
+}
+
+.name {
+  max-width: 100px;
+  color: var(--color-yellow-ish);
+  filter: drop-shadow(var(--drop-shadow-text));
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.timer {
+  grid-row-start: 1;
+  display: flex;
+  align-items: center;
+  transition: all 0.3s;
+}
+
+.timer[data-side="player"] {
+  grid-column-start: 1;
+  justify-content: flex-end;
+}
+
+.timer[data-side="opponent"] {
+  grid-column-start: 5;
+  justify-content: flex-start;
+}
+
+.timerInner {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+}
+
+.playerName {
+  grid-row-start: 2;
+  grid-column-start: 1;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  justify-content: flex-end;
+}
+
+.playerTotal {
+  grid-row-start: 3;
+  grid-column-start: 1;
+  color: #3b82f6;
+  filter: drop-shadow(var(--drop-shadow-text));
+  text-align: right;
+}
+
+.playerTurn {
+  grid-row-start: 4;
+  grid-column-start: 1;
+  filter: drop-shadow(var(--drop-shadow-text));
+  text-align: right;
+}
+
+.playerSelected {
+  grid-row-start: 5;
+  grid-column-start: 1;
+  filter: drop-shadow(var(--drop-shadow-text));
+  text-align: right;
+}
+
+.separatorLeft {
+  grid-row-start: 2;
+  grid-row-end: span 4;
+  grid-column-start: 2;
+  height: 100%;
+}
+
+.separatorRight {
+  grid-row-start: 2;
+  grid-row-end: span 4;
+  grid-column-start: 4;
+  height: 100%;
+}
+
+.goalLabel {
+  grid-row-start: 2;
+  grid-column-start: 3;
+  color: var(--color-yellow-ish);
+  filter: drop-shadow(var(--drop-shadow-text));
+  text-align: center;
+}
+
+.goalValue {
+  grid-row-start: 3;
+  grid-column-start: 3;
+  color: var(--color-yellow-ish);
+  filter: drop-shadow(var(--drop-shadow-text));
+  text-align: center;
+}
+
+.roundLabel {
+  grid-row-start: 4;
+  grid-column-start: 3;
+  filter: drop-shadow(var(--drop-shadow-text));
+  text-align: center;
+}
+
+.selectedLabel {
+  grid-row-start: 5;
+  grid-column-start: 3;
+  filter: drop-shadow(var(--drop-shadow-text));
+  text-align: center;
+}
+
+.opponentName {
+  grid-row-start: 2;
+  grid-column-start: 5;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  justify-content: flex-start;
+}
+
+.opponentTotal {
+  grid-row-start: 3;
+  grid-column-start: 5;
+  color: #ef4444;
+  filter: drop-shadow(var(--drop-shadow-text));
+  text-align: left;
+}
+
+.opponentTurn {
+  grid-row-start: 4;
+  grid-column-start: 5;
+  filter: drop-shadow(var(--drop-shadow-text));
+  text-align: left;
+}
+
+.opponentSelected {
+  grid-row-start: 5;
+  grid-column-start: 5;
+  filter: drop-shadow(var(--drop-shadow-text));
+  text-align: left;
+}
+
+.playerName,
+.opponentName,
+.goalLabel,
+.goalValue,
+.playerTotal,
+.opponentTotal {
+  font-size: 0.875rem;
+}
+
+
+.playerTurn,
+.playerSelected,
+.roundLabel,
+.selectedLabel,
+.opponentTurn,
+.opponentSelected {
+  font-size: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .grid {
+    column-gap: 16px;
+    row-gap: 8px;
+  }
+
+  .name {
+    max-width: 120px;
+  }
+
+  .timerInner {
+    width: 72px;
+    height: 72px;
+  }
+
+  .playerName,
+  .goalLabel,
+  .opponentName {
+    font-size: 1.5rem;
+    font-weight: 500;
+  }
+
+  .playerTotal,
+  .opponentTotal {
+    font-size: 1.875rem;
+    font-weight: 700;
+  }
+
+  .goalValue {
+    font-size: 1.875rem;
+    font-weight: 500;
+  }
+
+  .roundLabel,
+  .selectedLabel {
+    font-size: 1.125rem;
+    font-weight: 400;
+  }
+
+  .playerTurn,
+  .playerSelected,
+  .opponentTurn,
+  .opponentSelected {
+    font-size: 1.25rem;
+    font-weight: 800;
+  }
+}

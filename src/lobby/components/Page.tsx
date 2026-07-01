@@ -1,58 +1,30 @@
-import { ErrorBoundary, For, Suspense } from "solid-js";
-import { createAsync, useNavigate } from "@solidjs/router";
-
-import { lobbyDataGamesQuery } from "src/lobby/helpers/data";
-import { RoutesPageError } from "src/routes/components/PageError";
-import { RoutesPagePending } from "src/routes/components/PagePending";
+import { TestTypography } from "src/lobby/components/TestTypography";
+import { TestAssetsLoading } from "src/lobby/components/TestAssetsLoading";
+import { TestGameTimer } from "src/lobby/components/TestGameTimer";
+import { TestGamePlayersScore } from "src/lobby/components/TestGamePlayersScore";
+import { UiSeparator } from "src/ui/Separator";
 
 export function LobbyPage() {
-  const games = createAsync(() => lobbyDataGamesQuery());
-  const navigate = useNavigate();
 
   return (
-    <section class="page">
-      <h1 class="page-title">
-        Lobby
-      </h1>
-      <ErrorBoundary
-        fallback={(error, reset) => (
-          <RoutesPageError
-            error={error}
-            reset={reset}
-            title="Could not load lobby"
-          />
-        )}
-      >
-        <Suspense
-          fallback={(
-            <RoutesPagePending label="Loading lobby…" />
-          )}
-        >
-          <ul class="card-list">
-            <For each={games()}>
-              {(game) => (
-                <li class="card">
-                  <div>
-                    <strong>
-                      {game.opponent}
-                    </strong>
-                    <span class="card-meta">
-                      Target {game.targetScore}
-                    </span>
-                  </div>
-                  <button
-                    class="control-button"
-                    type="button"
-                    onClick={() => navigate(`/game/${game.id}`)}
-                  >
-                    Resume
-                  </button>
-                </li>
-              )}
-            </For>
-          </ul>
-        </Suspense>
-      </ErrorBoundary>
+    <section
+      style={{
+        "max-width": "1024px",
+        margin: "0 auto",
+        padding: "48px 24px 128px",
+        display: "flex",
+        "flex-direction": "column",
+        gap: "48px",
+      }}
+    >
+      <TestTypography />
+      <UiSeparator style={{ "margin-inline": "auto" }} />
+      <TestAssetsLoading />
+      <UiSeparator style={{ "margin-inline": "auto" }} />
+      <TestGameTimer />
+      <UiSeparator style={{ "margin-inline": "auto" }} />
+      <TestGamePlayersScore />
+      <UiSeparator style={{ "margin-inline": "auto" }} />
     </section>
   );
 }

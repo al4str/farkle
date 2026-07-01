@@ -1,0 +1,41 @@
+.area {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: auto;
+  isolation: isolate;
+  width: 100%;
+  max-height: 100dvh;
+  margin: 0;
+  padding: 24px;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  background-image: linear-gradient(
+    to bottom,
+    rgba(24, 24, 27, 0.85) 50%,
+    rgba(24, 24, 27, 0)
+  );
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+.area[data-visible] {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.item {
+  transition:
+    opacity 0.3s,
+    transform 0.3s;
+}
+
+.item[data-removing] {
+  opacity: 0;
+  transform: translateX(16px);
+}

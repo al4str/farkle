@@ -1,0 +1,58 @@
+.field {
+  position: relative;
+  isolation: isolate;
+  display: block;
+  width: 100%;
+  max-width: 512px;
+  height: 100px;
+}
+
+.field[data-disabled] {
+  filter: brightness(0.75);
+}
+
+.background {
+  position: absolute;
+  z-index: 0;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("/assets/images/ui/field_bg.webp");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+.input {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  padding: 32px 24px 16px;
+  border: none;
+  background: none;
+  font-size: 3rem;
+  text-align: center;
+  color: var(--color-black-ish);
+  text-shadow: var(--drop-shadow-text);
+}
+
+.input:focus-visible {
+  outline: 2px solid var(--color-yellow-ish);
+  outline-offset: 2px;
+}
+
+.frame {
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("/assets/images/ui/field_frame.webp");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  pointer-events: none;
+}

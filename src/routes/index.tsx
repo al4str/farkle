@@ -28,7 +28,7 @@ export const ROUTES_DEFINITION: RouteDefinition[] = [
   },
   {
     path: "/game/:id",
-    component: lazy(() => import("src/game/components/Page")),
+    component: lazy(() => import("src/game/components/PageIndex")),
     preload: gameDataPreload,
     matchFilters: {
       id: GAME_ID_REGEXP,

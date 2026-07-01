@@ -1,0 +1,15 @@
+.selector {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.minor {
+  color: var(--color-gray-ish);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}

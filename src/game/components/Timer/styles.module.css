@@ -1,0 +1,49 @@
+.timer {
+  position: relative;
+  transition: opacity 0.15s linear;
+}
+
+.timer[data-hidden="true"] {
+  opacity: 0;
+}
+
+.track {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("/assets/images/ui/progress_track.webp");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+.indicatorMask {
+  position: absolute;
+  top: 5%;
+  left: 6%;
+  width: 88%;
+  height: 88%;
+}
+
+.indicator {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("/assets/images/ui/progress_indicator.webp");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+.hourglass {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 28%;
+  height: 100%;
+  background-image: url("/assets/images/ui/hourglass.webp");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  transform: translateX(-50%);
+}

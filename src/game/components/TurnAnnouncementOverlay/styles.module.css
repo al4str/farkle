@@ -1,0 +1,68 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: safe center;
+  background: radial-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0) 60%);
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: opacity 0.15s linear;
+}
+
+.overlay[data-hidden] {
+  opacity: 0;
+}
+
+.message {
+  position: relative;
+  font-size: 1rem;
+  font-style: italic;
+  text-align: center;
+  color: var(--color-yellow-ish);
+  text-shadow: var(--drop-shadow-text);
+}
+
+.ornament {
+  position: absolute;
+  top: 50%;
+  width: 24px;
+  height: 32px;
+  background-image: url("/assets/images/ui/message_ornament.webp");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.ornamentLeft {
+  left: -4px;
+  transform: translate(-100%, -50%);
+}
+
+.ornamentRight {
+  right: -4px;
+  transform: translate(100%, -50%) scale(-1);
+}
+
+@media (min-width: 1024px) {
+  .message {
+    font-size: 2.25rem;
+    letter-spacing: 0.025em;
+  }
+
+  .ornament {
+    width: 33px;
+    height: 64px;
+  }
+
+  .ornamentLeft {
+    left: -16px;
+  }
+
+  .ornamentRight {
+    right: -16px;
+  }
+}

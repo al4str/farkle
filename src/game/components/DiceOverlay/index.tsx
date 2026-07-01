@@ -18,15 +18,15 @@ import { gameRngMulberry32 } from "src/game/helpers/rng";
 import { gameSeedManagerGenerateMaster } from "src/game/helpers/seedManager";
 import { placeIntoRadius } from "src/utils/placeIntoRadius";
 import { spatialNavigatorCreate } from "src/utils/spatialNavigator";
-import styles from "src/game/components/DiceOverlay.module.css";
+import styles from "src/game/components/DiceOverlay/styles.module.css";
 
 const DICE_NAMES = [
   "dieNormal",
   "dieNormal",
   "dieNormal",
-  "dieNormal",
-  "dieNormal",
-  "dieNormal",
+  "dieDevil",
+  "die_Antiocha",
+  "dieKingdomCome",
 ] as const satisfies DiceName[];
 
 const ARROW_DIRECTIONS = new Map<InteractionsKeyCode, SpatialNavigatorDirection>([

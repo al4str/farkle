@@ -1,0 +1,17 @@
+.overlay {
+  isolation: isolate;
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: safe center;
+  gap: 16px;
+  padding: 32px;
+  background-color: rgb(24 24 27 / 95%);
+  backdrop-filter: blur(2px);
+}
+
+.action {
+  flex-shrink: 0;
+}
