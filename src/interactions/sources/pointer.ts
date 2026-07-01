@@ -3,10 +3,10 @@ import type { InteractionsActionId, InteractionsDispatch, InteractionsPointerHan
 export function interactionsPointerHandlers(dispatch: InteractionsDispatch, actionId: InteractionsActionId): InteractionsPointerHandlers {
   return {
     onPointerDown: (event: PointerEvent): void => {
-      dispatch.pressPointer(actionId, event.button, dispatch.now());
+      dispatch.pressPointer(actionId, event.button, dispatch.now(), event);
     },
     onPointerUp: (event: PointerEvent): void => {
-      dispatch.releasePointer(actionId, event.button, dispatch.now());
+      dispatch.releasePointer(actionId, event.button, dispatch.now(), event);
     },
     onPointerLeave: (): void => {
       dispatch.releaseAllPointers(actionId, dispatch.now());

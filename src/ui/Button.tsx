@@ -2,10 +2,11 @@ import type { JSX } from "solid-js";
 import { splitProps, onCleanup, onMount, Show } from "solid-js";
 import { clsx } from "clsx";
 
-import type { InteractionsDefinition } from "src/interactions/types";
+import type { InteractionsDefinition, InteractionsListeners } from "src/interactions/types";
 import type { InteractionsKeyCode } from "src/interactions/keys";
-import { interactionsDefine, interactionsGetHandlers, interactionsGetState, interactionsOn, interactionsRemove } from "src/interactions";
+import { interactionsGetHandlers, interactionsGetState, interactionsListen } from "src/interactions";
 import { interactionsKeyLabel } from "src/interactions/keys";
+import { audioUiPlay } from "src/audio";
 import styles from "src/ui/Button.module.css";
 
 const HOLD_TIME_SEC = 1;
@@ -66,18 +67,24 @@ export function UiButton(props: UiButtonProps) {
   };
 
   onMount(() => {
-    interactionsDefine(definition);
-    const trigger = holdable ? "hold" : "click";
-    const off = interactionsOn(actionId, (event) => {
-      if (event.type === trigger) {
+    const listeners: InteractionsListeners = {
+      press: () => {
+        audioUiPlay("cling_mid", { rate: 0.90 + Math.random() * 0.1 });
+      },
+    };
+    if (holdable) {
+      listeners.hold = () => {
+        audioUiPlay("cling_high", { rate: 0.90 + Math.random() * 0.1 });
         onClick();
-      }
-    });
-
-    onCleanup(() => {
-      off();
-      interactionsRemove(actionId);
-    });
+      };
+    }
+    else {
+      listeners.click = () => {
+        onClick();
+      };
+    }
+    const off = interactionsListen(definition, listeners);
+    onCleanup(off);
   });
 
   return (

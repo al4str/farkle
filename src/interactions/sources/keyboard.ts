@@ -10,11 +10,11 @@ export function interactionsKeyboardListen(dispatch: InteractionsDispatch): Inte
     if (event.repeat) {
       return;
     }
-    dispatch.pressKey(event.code, interactionsKeyboardModifierState(event), dispatch.now());
+    dispatch.pressKey(event.code, interactionsKeyboardModifierState(event), dispatch.now(), event);
   };
 
   const onKeyUp = (event: KeyboardEvent): void => {
-    dispatch.releaseKey(event.code, dispatch.now());
+    dispatch.releaseKey(event.code, dispatch.now(), event);
   };
 
   const onBlur = (): void => {

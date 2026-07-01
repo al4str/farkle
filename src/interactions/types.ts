@@ -1,3 +1,5 @@
+import type { InteractionsKeyCode } from "src/interactions/keys";
+
 export type InteractionsActionId = string;
 
 export type InteractionsDevice = "keyboardMouse" | "gamepad";
@@ -30,7 +32,7 @@ export type InteractionsKeyModifiersState = Required<InteractionsKeyModifiers>;
 
 export interface InteractionsKeyBinding {
   kind: "key";
-  code: string;
+  code: InteractionsKeyCode;
   modifiers?: InteractionsKeyModifiers;
 }
 
@@ -41,9 +43,24 @@ export interface InteractionsPointerBinding {
 
 export type InteractionsBinding = InteractionsKeyBinding | InteractionsPointerBinding;
 
+export interface InteractionsKeySource {
+  kind: "key";
+  code: InteractionsKeyCode;
+  event: KeyboardEvent;
+}
+
+export interface InteractionsPointerSource {
+  kind: "pointer";
+  button: number;
+  event: PointerEvent;
+}
+
+export type InteractionsSource = InteractionsKeySource | InteractionsPointerSource;
+
 interface InteractionEventBase {
   actionId: InteractionsActionId;
   elapsed: number;
+  source: InteractionsSource;
 }
 
 interface InteractionEventPress extends InteractionEventBase {
@@ -83,6 +100,22 @@ export type InteractionEvent =
 
 export type InteractionEventHandler = (event: InteractionEvent) => void;
 
+export type InteractionEventOfType<Type extends InteractionEvent["type"]> = Extract<InteractionEvent, { type: Type }>;
+
+export type InteractionEventOfSource<Event extends InteractionEvent, Kind extends InteractionsSource["kind"]> = Event & { source: Extract<InteractionsSource, { kind: Kind }> };
+
+export type InteractionsSourceListeners<Event extends InteractionEvent> = {
+  [Kind in InteractionsSource["kind"]]?: (event: InteractionEventOfSource<Event, Kind>) => void;
+};
+
+export type InteractionsListener<Event extends InteractionEvent> =
+  | ((event: Event) => void)
+  | InteractionsSourceListeners<Event>;
+
+export type InteractionsListeners = {
+  [Type in InteractionEvent["type"]]?: InteractionsListener<InteractionEventOfType<Type>>;
+};
+
 export interface InteractionsPointerHandlers {
   onPointerDown: (event: PointerEvent) => void;
   onPointerUp: (event: PointerEvent) => void;
@@ -92,10 +125,10 @@ export interface InteractionsPointerHandlers {
 
 export interface InteractionsDispatch {
   now: () => number;
-  pressKey: (code: string, modifiers: InteractionsKeyModifiersState, now: number) => void;
-  releaseKey: (code: string, now: number) => void;
+  pressKey: (code: string, modifiers: InteractionsKeyModifiersState, now: number, event: KeyboardEvent) => void;
+  releaseKey: (code: string, now: number, event: KeyboardEvent) => void;
   releaseAllKeys: (now: number) => void;
-  pressPointer: (actionId: InteractionsActionId, button: number, now: number) => void;
-  releasePointer: (actionId: InteractionsActionId, button: number, now: number) => void;
+  pressPointer: (actionId: InteractionsActionId, button: number, now: number, event: PointerEvent) => void;
+  releasePointer: (actionId: InteractionsActionId, button: number, now: number, event: PointerEvent) => void;
   releaseAllPointers: (actionId: InteractionsActionId, now: number) => void;
 }

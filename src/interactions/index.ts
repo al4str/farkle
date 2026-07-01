@@ -1,7 +1,7 @@
 import { batch } from "solid-js";
 import { produce } from "solid-js/store";
 
-import type { InteractionEvent, InteractionEventHandler, InteractionsDefinition, InteractionsActionId, InteractionsState, InteractionsBinding, InteractionsDevice, InteractionsDispatch, InteractionsKeyModifiersState, InteractionsPointerHandlers } from "src/interactions/types";
+import type { InteractionEvent, InteractionEventHandler, InteractionsDefinition, InteractionsActionId, InteractionsListener, InteractionsListeners, InteractionsState, InteractionsBinding, InteractionsDevice, InteractionsDispatch, InteractionsKeyModifiersState, InteractionsPointerHandlers } from "src/interactions/types";
 import type { InteractionsRecognizerActionRuntime, InteractionsRecognizerDefaults } from "src/interactions/recognizer";
 import type { InteractionsKeyboardListeners } from "src/interactions/sources/keyboard";
 import { loopAddUpdate, loopRemoveUpdate } from "src/loop";
@@ -112,6 +112,18 @@ export function interactionsOn(actionId: InteractionsActionId, handler: undefine
   };
 }
 
+export function interactionsListen(definition: InteractionsDefinition, listeners: InteractionsListeners): () => void {
+  interactionsDefine(definition);
+  const off = interactionsOn(definition.actionId, (event) => {
+    dispatchListener(listeners, event);
+  });
+
+  return (): void => {
+    off();
+    interactionsRemove(definition.actionId);
+  };
+}
+
 export function interactionsOnAny(handler: InteractionEventHandler): () => void {
   const subscription: Subscription = {
     actionId: null,
@@ -144,6 +156,46 @@ function update(_delta: number, elapsed: number): void {
   });
 }
 
+function dispatchListener(listeners: InteractionsListeners, event: InteractionEvent): void {
+  switch (event.type) {
+    case "press":
+      invokeListener(listeners.press, event);
+      break;
+    case "release":
+      invokeListener(listeners.release, event);
+      break;
+    case "click":
+      invokeListener(listeners.click, event);
+      break;
+    case "holdstart":
+      invokeListener(listeners.holdstart, event);
+      break;
+    case "holdprogress":
+      invokeListener(listeners.holdprogress, event);
+      break;
+    case "hold":
+      invokeListener(listeners.hold, event);
+      break;
+  }
+}
+
+function invokeListener<Event extends InteractionEvent>(listener: undefined | InteractionsListener<Event>, event: Event): void {
+  if (!listener) {
+    return;
+  }
+  if (typeof listener === "function") {
+    listener(event);
+    return;
+  }
+  const source = event.source;
+  if (source.kind === "key") {
+    listener.key?.({ ...event, source });
+  }
+  else {
+    listener.pointer?.({ ...event, source });
+  }
+}
+
 function emit(event: InteractionEvent): void {
   if (event.type === "press") {
     STATE.lastDevice = event.device;
@@ -155,30 +207,38 @@ function emit(event: InteractionEvent): void {
   }
 }
 
-function pressKey(code: string, modifiers: InteractionsKeyModifiersState, now: number): void {
+function pressKey(code: string, modifiers: InteractionsKeyModifiersState, now: number, event: KeyboardEvent): void {
   for (const runtime of STATE.actions.values()) {
-    activateMatching(
-      runtime,
-      now,
-      (binding) => {
-        return binding.kind === "key"
-          && binding.code === code
-          && interactionsKeyboardModifiersMatch(binding.modifiers, modifiers);
-      },
-    );
+    for (const binding of runtime.definition.bindings) {
+      if (binding.kind === "key" && binding.code === code && interactionsKeyboardModifiersMatch(binding.modifiers, modifiers)) {
+        interactionsRecognizerActivate(
+          runtime,
+          binding,
+          { kind: "key", code: binding.code, event },
+          DEVICE,
+          now,
+          emit,
+        );
+      }
+    }
   }
 }
 
-function releaseKey(code: string, now: number): void {
+function releaseKey(code: string, now: number, event: KeyboardEvent): void {
   for (const runtime of STATE.actions.values()) {
-    deactivateMatching(
-      runtime,
-      now,
-      false,
-      (binding) => {
-        return binding.kind === "key" && binding.code === code;
-      },
-    );
+    for (const binding of runtime.definition.bindings) {
+      if (binding.kind === "key" && binding.code === code) {
+        interactionsRecognizerDeactivate(
+          runtime,
+          binding,
+          { kind: "key", code: binding.code, event },
+          DEVICE,
+          now,
+          emit,
+          false,
+        );
+      }
+    }
   }
 }
 
@@ -195,32 +255,40 @@ function releaseAllKeys(now: number): void {
   }
 }
 
-function pressPointer(actionId: InteractionsActionId, button: number, now: number): void {
+function pressPointer(actionId: InteractionsActionId, button: number, now: number, event: PointerEvent): void {
   const runtime = STATE.actions.get(actionId);
   if (runtime) {
-    activateMatching(
-      runtime,
-      now,
-      (binding) => {
-        return binding.kind === "pointer"
-          && (binding.button === undefined || binding.button === button);
-      },
-    );
+    for (const binding of runtime.definition.bindings) {
+      if (binding.kind === "pointer" && (binding.button === undefined || binding.button === button)) {
+        interactionsRecognizerActivate(
+          runtime,
+          binding,
+          { kind: "pointer", button, event },
+          DEVICE,
+          now,
+          emit,
+        );
+      }
+    }
   }
 }
 
-function releasePointer(actionId: InteractionsActionId, button: number, now: number): void {
+function releasePointer(actionId: InteractionsActionId, button: number, now: number, event: PointerEvent): void {
   const runtime = STATE.actions.get(actionId);
   if (runtime) {
-    deactivateMatching(
-      runtime,
-      now,
-      false,
-      (binding) => {
-        return binding.kind === "pointer"
-          && (binding.button === undefined || binding.button === button);
-      },
-    );
+    for (const binding of runtime.definition.bindings) {
+      if (binding.kind === "pointer" && (binding.button === undefined || binding.button === button)) {
+        interactionsRecognizerDeactivate(
+          runtime,
+          binding,
+          { kind: "pointer", button, event },
+          DEVICE,
+          now,
+          emit,
+          false,
+        );
+      }
+    }
   }
 }
 
@@ -238,26 +306,13 @@ function releaseAllPointers(actionId: InteractionsActionId, now: number): void {
   }
 }
 
-function activateMatching(runtime: InteractionsRecognizerActionRuntime, now: number, match: (binding: InteractionsBinding) => boolean): void {
-  for (const binding of runtime.definition.bindings) {
-    if (match(binding)) {
-      interactionsRecognizerActivate(
-        runtime,
-        binding,
-        DEVICE,
-        now,
-        emit,
-      );
-    }
-  }
-}
-
 function deactivateMatching(runtime: InteractionsRecognizerActionRuntime, now: number, synthetic: boolean, match: (binding: InteractionsBinding) => boolean): void {
   for (const binding of runtime.definition.bindings) {
     if (match(binding)) {
       interactionsRecognizerDeactivate(
         runtime,
         binding,
+        null,
         DEVICE,
         now,
         emit,

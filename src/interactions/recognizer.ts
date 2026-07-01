@@ -1,4 +1,4 @@
-import type { InteractionEvent, InteractionsDefinition, InteractionsState, InteractionsBinding, InteractionsDevice, InteractionsDefinitionResolved } from "src/interactions/types";
+import type { InteractionEvent, InteractionsDefinition, InteractionsState, InteractionsBinding, InteractionsDevice, InteractionsDefinitionResolved, InteractionsSource } from "src/interactions/types";
 import { clamp } from "src/utils/clamp";
 
 export interface InteractionsRecognizerDefaults {
@@ -8,7 +8,8 @@ export interface InteractionsRecognizerDefaults {
 
 export interface InteractionsRecognizerActionRuntime {
   definition: InteractionsDefinitionResolved;
-  active: Set<InteractionsBinding>;
+  active: Map<InteractionsBinding, InteractionsSource>;
+  trigger: null | InteractionsSource;
   pressed: boolean;
   pressElapsed: number;
   holdStarted: boolean;
@@ -30,7 +31,8 @@ export function interactionsRecognizerResolveDefinition(definition: Interactions
 export function interactionsRecognizerCreateRuntime(definitionResolved: InteractionsDefinitionResolved): InteractionsRecognizerActionRuntime {
   return {
     definition: definitionResolved,
-    active: new Set<InteractionsBinding>(),
+    active: new Map<InteractionsBinding, InteractionsSource>(),
+    trigger: null,
     pressed: false,
     pressElapsed: 0,
     holdStarted: false,
@@ -47,15 +49,16 @@ export function interactionsRecognizerViewOf(runtime: InteractionsRecognizerActi
   };
 }
 
-export function interactionsRecognizerActivate(runtime: InteractionsRecognizerActionRuntime, binding: InteractionsBinding, device: InteractionsDevice, now: number, emit: InteractionsRecognizerEmit): void {
+export function interactionsRecognizerActivate(runtime: InteractionsRecognizerActionRuntime, binding: InteractionsBinding, source: InteractionsSource, device: InteractionsDevice, now: number, emit: InteractionsRecognizerEmit): void {
   if (runtime.active.has(binding)) {
     return;
   }
   const wasIdle = runtime.active.size === 0;
-  runtime.active.add(binding);
+  runtime.active.set(binding, source);
   if (!wasIdle) {
     return;
   }
+  runtime.trigger = source;
   runtime.pressed = true;
   runtime.pressElapsed = now;
   runtime.holdStarted = false;
@@ -65,19 +68,23 @@ export function interactionsRecognizerActivate(runtime: InteractionsRecognizerAc
     type: "press",
     actionId: runtime.definition.actionId,
     elapsed: now,
+    source,
     device,
   });
 }
 
-export function interactionsRecognizerDeactivate(runtime: InteractionsRecognizerActionRuntime, binding: InteractionsBinding, device: InteractionsDevice, now: number, emit: InteractionsRecognizerEmit, synthetic: boolean): void {
-  if (!runtime.active.has(binding)) {
+export function interactionsRecognizerDeactivate(runtime: InteractionsRecognizerActionRuntime, binding: InteractionsBinding, releaseSource: null | InteractionsSource, device: InteractionsDevice, now: number, emit: InteractionsRecognizerEmit, synthetic: boolean): void {
+  const stored = runtime.active.get(binding);
+  if (!stored) {
     return;
   }
   runtime.active.delete(binding);
+  const source = releaseSource ?? stored;
   emit({
     type: "release",
     actionId: runtime.definition.actionId,
     elapsed: now,
+    source,
     device,
   });
   if (runtime.active.size > 0) {
@@ -90,10 +97,12 @@ export function interactionsRecognizerDeactivate(runtime: InteractionsRecognizer
       type: "click",
       actionId: runtime.definition.actionId,
       elapsed: now,
+      source,
     });
   }
 
   runtime.pressed = false;
+  runtime.trigger = null;
   runtime.holdStarted = false;
   runtime.holdFired = false;
   runtime.lastHoldProgress = 0;
@@ -103,6 +112,10 @@ export function interactionsRecognizerStep(runtime: InteractionsRecognizerAction
   if (!runtime.pressed) {
     return;
   }
+  const source = runtime.trigger;
+  if (!source) {
+    return;
+  }
   const heldFor = Math.max(0, elapsed - runtime.pressElapsed);
   if (!runtime.holdStarted) {
     runtime.holdStarted = true;
@@ -110,6 +123,7 @@ export function interactionsRecognizerStep(runtime: InteractionsRecognizerAction
       type: "holdstart",
       actionId: runtime.definition.actionId,
       elapsed,
+      source,
     });
   }
   const progress = runtime.definition.holdTime > 0
@@ -121,6 +135,7 @@ export function interactionsRecognizerStep(runtime: InteractionsRecognizerAction
       type: "holdprogress",
       actionId: runtime.definition.actionId,
       elapsed,
+      source,
       progress,
     });
   }
@@ -130,6 +145,7 @@ export function interactionsRecognizerStep(runtime: InteractionsRecognizerAction
       type: "hold",
       actionId: runtime.definition.actionId,
       elapsed,
+      source,
     });
   }
 }
